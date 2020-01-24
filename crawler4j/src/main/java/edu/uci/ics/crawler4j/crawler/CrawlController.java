@@ -97,18 +97,18 @@ public class CrawlController {
         this(config, pageFetcher, null, robotstxtServer, tldList, null, null, null);
     }
 
-    public CrawlController(CrawlConfig config, PageFetcher pageFetcher, Parser parser,
+    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
             RobotstxtServer robotstxtServer, TLDList tldList) throws Exception {
         this(config, pageFetcher, parser, robotstxtServer, tldList, null, null, null);
     }
 
-    public CrawlController(CrawlConfig config, PageFetcher pageFetcher, Parser parser,
+    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
             RobotstxtServer robotstxtServer, TLDList tldList,
             String docIdDbName, String pendingDbName) throws Exception {
         this(config, pageFetcher, parser, robotstxtServer, tldList, null, null, null);
     }
 
-    public CrawlController(CrawlConfig config, PageFetcher pageFetcher, Parser parser,
+    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
                            RobotstxtServer robotstxtServer, TLDList tldList,
                            String docIdDbName, String pendingDbName, String inProcessDbName) throws Exception {
         config.validate();
