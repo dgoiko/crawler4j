@@ -224,4 +224,14 @@ public class Frontier {
             waitingList.notifyAll();
         }
     }
+
+    /**
+     * Creates the WorkQueues for this frontier. Can be overriden to create
+     * subclases of WorkQueues instead
+     * @return
+     * @see Environment#openDatabase
+     */
+    protected WorkQueues createWorkQueues(Environment env, CrawlConfig config, String databaseName) {
+        return new WorkQueues(env, databaseName, config.isResumableCrawling());
+    }
 }
