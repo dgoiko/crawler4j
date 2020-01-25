@@ -87,31 +87,30 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
     protected Parser parser;
 
     public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher,
-            					  RobotstxtServer robotstxtServer) throws Exception {
-    	this(config, pageFetcher, null, robotstxtServer, null, null, null, null);
-	}
-	
-	public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher,
-							      RobotstxtServer robotstxtServer, TLDList tldList) throws Exception {
-		this(config, pageFetcher, null, robotstxtServer, tldList, null, null, null);
-	}
-	
-	public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
-								  RobotstxtServer robotstxtServer, TLDList tldList) throws Exception {
-		this(config, pageFetcher, parser, robotstxtServer, tldList, null, null, null);
-	}
-	
-	public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
-								  RobotstxtServer robotstxtServer, TLDList tldList,
-								  String docIdDbName, String pendingDbName) throws Exception {
-		this(config, pageFetcher, parser, robotstxtServer, tldList, null, null, null);
-	}
-    
+                                  RobotstxtServer robotstxtServer) throws Exception {
+        this(config, pageFetcher, null, robotstxtServer, null, null, null, null);
+    }
+
+    public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher,
+                                  RobotstxtServer robotstxtServer, TLDList tldList) throws Exception {
+        this(config, pageFetcher, null, robotstxtServer, tldList, null, null, null);
+    }
 
     public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
-						          RobotstxtServer robotstxtServer, TLDList tldList,
-						          String docIdDbName, String pendingDbName, String inProcessDbName) throws Exception {
-    	config.validate();
+                                  RobotstxtServer robotstxtServer, TLDList tldList) throws Exception {
+        this(config, pageFetcher, parser, robotstxtServer, tldList, null, null, null);
+    }
+
+    public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
+                                  RobotstxtServer robotstxtServer, TLDList tldList,
+                                  String docIdDbName, String pendingDbName) throws Exception {
+        this(config, pageFetcher, parser, robotstxtServer, tldList, null, null, null);
+    }
+
+    public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
+                                  RobotstxtServer robotstxtServer, TLDList tldList,
+                                  String docIdDbName, String pendingDbName, String inProcessDbName) throws Exception {
+        config.validate();
         this.config = config;
 
         File folder = new File(config.getCrawlStorageFolder());
@@ -165,7 +164,7 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
 
         robotstxtServer.setCrawlConfig(config);
     }
-    
+
     /**
      * Creates the Frontier for this instance. Subclasses can create custom Frontiers
      * @param config configuration procided to the CrawlController
@@ -505,18 +504,18 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
             // Do nothing
         }
     }
-    
+
     /**
-     * Extracts data from crawler. Subclases can override this in order to fine-tune 
+     * Extracts data from crawler. Subclases can override this in order to fine-tune
      * results extraction with custom behaviour or processing.
      *
      * @param crawler
      * @return
      */
     protected Object collectCrawlerData(CrawlerType crawler) {
-    	return crawler.getMyLocalData();
+        return crawler.getMyLocalData();
     }
-    
+
     /**
      * Adds a new seed URL. A seed URL is a URL that is fetched by the crawler
      * to extract new URLs in it and follow them for crawling.

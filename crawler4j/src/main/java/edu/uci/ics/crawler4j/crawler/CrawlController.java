@@ -17,7 +17,6 @@
 
 package edu.uci.ics.crawler4j.crawler;
 
-
 import edu.uci.ics.crawler4j.fetcher.PageFetcherInterface;
 import edu.uci.ics.crawler4j.parser.Parser;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
@@ -58,6 +57,5 @@ public class CrawlController extends GenericCrawlController<WebCrawler> {
             throws Exception {
         super(config, pageFetcher, robotstxtServer);
     }
-
 
 }

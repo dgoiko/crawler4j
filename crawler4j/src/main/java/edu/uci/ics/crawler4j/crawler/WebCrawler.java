@@ -575,11 +575,11 @@ public class WebCrawler implements Runnable {
 
     protected void redirectionPhase(Page page, WebURL curURL, String movedToUrl)
                                         throws IOException, InterruptedException, ParseException {
-    	if (curURL.isFollowRedirectsInmediatly() && curURL.getMaxInmediateRedirects() > 0) {
+        if (curURL.isFollowRedirectsInmediatly() && curURL.getMaxInmediateRedirects() > 0) {
             followRedirectInmediatly(curURL, movedToUrl);
             return;
         }
-    	WebURL tempWebURL = new WebURL();
+        WebURL tempWebURL = new WebURL();
         tempWebURL.setURL(movedToUrl);
         int newDocId = docIdServer.getDocId(tempWebURL);
         if (newDocId > 0) {
