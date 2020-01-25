@@ -19,10 +19,7 @@ package edu.uci.ics.crawler4j.crawler;
 
 
 import edu.uci.ics.crawler4j.fetcher.PageFetcherInterface;
-import edu.uci.ics.crawler4j.frontier.DocIDServer;
-import edu.uci.ics.crawler4j.frontier.Frontier;
 import edu.uci.ics.crawler4j.parser.Parser;
-import edu.uci.ics.crawler4j.parser.ParserInterface;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.TLDList;
 
@@ -35,20 +32,32 @@ import edu.uci.ics.crawler4j.url.TLDList;
 
 public class CrawlController extends GenericCrawlController<WebCrawler> {
 
-	public CrawlController(CrawlConfig config, PageFetcher pageFetcher, Parser parser, RobotstxtServer robotstxtServer,
-			TLDList tldList) throws Exception {
-		super(config, pageFetcher, parser, robotstxtServer, tldList);
-	}
+    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
+            RobotstxtServer robotstxtServer, TLDList tldList, String docIdDbName, String pendingDbName,
+            String inProcessDbName) throws Exception {
+        super(config, pageFetcher, parser, robotstxtServer, tldList, docIdDbName, pendingDbName, inProcessDbName);
+    }
 
-	public CrawlController(CrawlConfig config, PageFetcher pageFetcher, RobotstxtServer robotstxtServer,
-			TLDList tldList) throws Exception {
-		super(config, pageFetcher, robotstxtServer, tldList);
-	}
+    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
+            RobotstxtServer robotstxtServer, TLDList tldList, String docIdDbName, String pendingDbName)
+            throws Exception {
+        super(config, pageFetcher, parser, robotstxtServer, tldList, docIdDbName, pendingDbName);
+    }
 
-	public CrawlController(CrawlConfig config, PageFetcher pageFetcher, RobotstxtServer robotstxtServer)
-			throws Exception {
-		super(config, pageFetcher, robotstxtServer);
-	}
+    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
+            RobotstxtServer robotstxtServer, TLDList tldList) throws Exception {
+        super(config, pageFetcher, parser, robotstxtServer, tldList);
+    }
+
+    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, RobotstxtServer robotstxtServer,
+            TLDList tldList) throws Exception {
+        super(config, pageFetcher, robotstxtServer, tldList);
+    }
+
+    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, RobotstxtServer robotstxtServer)
+            throws Exception {
+        super(config, pageFetcher, robotstxtServer);
+    }
 
 
 }
