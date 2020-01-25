@@ -448,21 +448,19 @@ public class WebCrawler implements Runnable {
                     onRedirectedStatusCode(page);
 
                     if (myController.getConfig().isFollowRedirects()) {
-                        WebURL webURL = new WebURL();
-                        webURL.setURL(movedToUrl);
-
-                        int newDocId = docIdServer.getDocId(webURL);
+                    	if (curURL.isFollowRedirectsInmediatly() && curURL.getMaxInmediateRedirects() > 0) {
+                            followRedirectInmediatly(curURL, movedToUrl);
+                            return;
+                        }
+                        WebURL tempWebURL = new WebURL();
+                        tempWebURL.setURL(movedToUrl);
+                        int newDocId = docIdServer.getDocId(tempWebURL);
                         if (newDocId > 0) {
                             logger.debug("Redirect page: {} is already seen", curURL);
                             return;
                         }
 
-                        webURL.setTldList(myController.getTldList());
-                        webURL.setParentDocid(curURL.getParentDocid());
-                        webURL.setParentUrl(curURL.getParentUrl());
-                        webURL.setDepth(curURL.getDepth());
-                        webURL.setDocid(-1);
-                        webURL.setAnchor(curURL.getAnchor());
+                        WebURL webURL = createRedirectedWebURL(curURL, movedToUrl);
                         if (shouldVisit(page, webURL)) {
                             if (!shouldFollowLinksIn(webURL) || robotstxtServer.allows(webURL)) {
                                 performRedirect(webURL, curURL);
@@ -565,7 +563,7 @@ public class WebCrawler implements Runnable {
         for (WebURL webURL : parseData.getOutgoingUrls()) {
             webURL.setParentDocid(curURL.getDocid());
             webURL.setParentUrl(curURL.getURL());
-            int newdocid = docIdServer.getDocId(webURL.getURL());
+            int newdocid = docIdServer.getDocId(webURL);
             if (newdocid > 0) {
                 // This is not the first time that this Url is visited. So, we set the
                 // depth to a negative number.
@@ -577,7 +575,7 @@ public class WebCrawler implements Runnable {
                 if ((maxCrawlDepth == -1) || (curURL.getDepth() < maxCrawlDepth)) {
                     if (shouldVisit(page, webURL)) {
                         if (robotstxtServer.allows(webURL)) {
-                            webURL.setDocid(docIdServer.getNewDocID(webURL.getURL()));
+                            webURL.setDocid(docIdServer.getNewDocID(webURL));
                             toSchedule.add(webURL);
                         } else {
                             logger.debug(
@@ -596,7 +594,7 @@ public class WebCrawler implements Runnable {
     }
 
     protected void performRedirect(WebURL target, WebURL currURL) {
-        target.setDocid(docIdServer.getNewDocID(target.getURL()));
+        target.setDocid(docIdServer.getNewDocID(target));
         schedule(target);
     }
 
@@ -606,6 +604,49 @@ public class WebCrawler implements Runnable {
 
     protected void scheduleAll(List<WebURL> urls) {
         frontier.scheduleAll(urls);
+    }
+    /**
+     * Creates a new WebURL based on provided WebURL data.
+     *
+     * Subclases may use aditional parameters or use subclasses of WebURL.
+     *
+     * @param curURL
+     * @param movedToUrl
+     * @return
+     */
+    protected WebURL createRedirectedWebURL(WebURL curURL, String movedToUrl) {
+        WebURL webURL = new WebURL();
+        webURL.setTldList(myController.getTldList());
+        webURL.setURL(movedToUrl);
+        webURL.setParentDocid(curURL.getParentDocid());
+        webURL.setParentUrl(curURL.getParentUrl());
+        webURL.setDepth(curURL.getDepth());
+        webURL.setAnchor(curURL.getAnchor());
+        webURL.setDocid(-1);
+        return webURL;
+    }
+
+    /**
+     * Processes the redirected page without scheduling it, even if it was already seen.
+     *
+     * @param curURL
+     * @param movedToUrl
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ParseException
+     */
+    protected void followRedirectInmediatly(WebURL curURL, String movedToUrl)
+                        throws IOException, InterruptedException, ParseException {
+        WebURL webURL = createRedirectedWebURL(curURL, movedToUrl);
+        webURL.setFollowRedirectsInmediatly(true);
+        int newDocId = docIdServer.getDocId(webURL);
+        if (newDocId < 0) {
+            // Repeated visits are accepted, however, no new docIds will be generated.
+            newDocId = docIdServer.getNewDocID(webURL);
+        }
+        webURL.setDocid(newDocId);
+        webURL.setMaxInmediateRedirects((short)(curURL.getMaxInmediateRedirects() - 1));
+        this.processPage(webURL);
     }
 
     public Thread getThread() {

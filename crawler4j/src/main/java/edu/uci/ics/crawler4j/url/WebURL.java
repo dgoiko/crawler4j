@@ -58,6 +58,8 @@ public class WebURL implements Serializable {
     private String tag;
     private Map<String, String> attributes;
     private TLDList tldList;
+    private boolean followRedirectsInmediatly = false;
+    private short maxInmediateRedirects = 10;
     private boolean post;
     List<BasicNameValuePair> paramsPost;
 
@@ -277,6 +279,22 @@ public class WebURL implements Serializable {
         return attributes.getOrDefault(name, "");
     }
 
+    public boolean isFollowRedirectsInmediatly() {
+        return followRedirectsInmediatly;
+    }
+
+    public void setFollowRedirectsInmediatly(boolean followRedirectsInmediatly) {
+        this.followRedirectsInmediatly = followRedirectsInmediatly;
+    }
+
+    public short getMaxInmediateRedirects() {
+        return maxInmediateRedirects;
+    }
+
+    public void setMaxInmediateRedirects(short maxInmediateRedirects) {
+        this.maxInmediateRedirects = maxInmediateRedirects;
+    }
+
     @Override
     public int hashCode() {
         return url.hashCode();
@@ -385,4 +403,5 @@ public class WebURL implements Serializable {
         }
         return list;
     }
+
 }

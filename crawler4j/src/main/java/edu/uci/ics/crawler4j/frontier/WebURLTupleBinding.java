@@ -43,6 +43,8 @@ public class WebURLTupleBinding extends TupleBinding<WebURL> {
         webURL.setDepth(input.readShort());
         webURL.setPriority(input.readByte());
         webURL.setAnchor(input.readString());
+        webURL.setFollowRedirectsInmediatly(input.readBoolean());
+        webURL.setMaxInmediateRedirects(input.readShort());
         webURL.setPost(input.readBoolean());
         if (webURL.isPost()) {
             List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
@@ -71,6 +73,8 @@ public class WebURLTupleBinding extends TupleBinding<WebURL> {
         output.writeShort(url.getDepth());
         output.writeByte(url.getPriority());
         output.writeString(url.getAnchor());
+        output.writeBoolean(url.isFollowRedirectsInmediatly());
+        output.writeShort(url.getMaxInmediateRedirects());
         output.writeBoolean(url.isPost());
         if (url.isPost() && url.getParamsPost() != null) {
             for (BasicNameValuePair param : url.getParamsPost()) {
