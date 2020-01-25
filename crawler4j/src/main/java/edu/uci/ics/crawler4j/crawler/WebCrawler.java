@@ -459,7 +459,7 @@ public class WebCrawler implements Runnable {
                             logger.debug("Redirect page: {} is already seen", curURL);
                             return;
                         }
-
+                        
                         WebURL webURL = createRedirectedWebURL(curURL, movedToUrl);
                         if (shouldVisit(page, webURL)) {
                             if (!shouldFollowLinksIn(webURL) || robotstxtServer.allows(webURL)) {
@@ -556,6 +556,10 @@ public class WebCrawler implements Runnable {
         }
     }
 
+    protected WebURL createEmptyWebURL() {
+        return new WebURL();
+    }
+
     protected void scheduleOutgoingUrls(Page page, WebURL curURL) throws IOException, InterruptedException {
         ParseData parseData = page.getParseData();
         List<WebURL> toSchedule = new ArrayList<>();
@@ -615,7 +619,7 @@ public class WebCrawler implements Runnable {
      * @return
      */
     protected WebURL createRedirectedWebURL(WebURL curURL, String movedToUrl) {
-        WebURL webURL = new WebURL();
+        WebURL webURL = createEmptyWebURL();
         webURL.setTldList(myController.getTldList());
         webURL.setURL(movedToUrl);
         webURL.setParentDocid(curURL.getParentDocid());
