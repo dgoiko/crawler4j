@@ -154,16 +154,34 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
 
         env = new Environment(envHome, envConfig);
         docIdServer = new DocIDServer(env, config, docIdDbName);
-        frontier = new Frontier(env, config, pendingDbName, inProcessDbName);
+        frontier = createFrontier(config, pendingDbName, inProcessDbName);
 
         this.pageFetcher = pageFetcher;
-        this.parser = parser == null ? new Parser(config, tldList) : parser;
+        this.parser = parser == null ? new Parser(config, this.tldList) : parser;
         this.robotstxtServer = robotstxtServer;
 
         finished = false;
         shuttingDown = false;
 
         robotstxtServer.setCrawlConfig(config);
+    }
+    
+    /**
+     * Creates the Frontier for this instance. Subclasses can create custom Frontiers
+     * @param config configuration procided to the CrawlController
+     * @return
+     */
+    protected Frontier createFrontier(CrawlConfig config, String pendingDbName, String inProcessDbName) {
+        return new Frontier(env, config, pendingDbName, inProcessDbName);
+    }
+
+    /**
+     * Creates an empty WebURL. Subclases can override this to create subclases of WebURL instead.
+     * @param nonCanonicalString url before being transformed into canonical. It is ignored in default implementation
+     * @return
+     */
+    protected WebURL createEmptyWebURL(String nonCanonicalString) {
+        return new WebURL();
     }
 
     public Parser getParser() {
@@ -535,7 +553,7 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
      * @throws IOException
      */
     public void addSeed(String pageUrl, int docId) throws IOException, InterruptedException {
-        WebURL webUrl = new WebURL();
+        WebURL webUrl = createEmptyWebURL(pageUrl);
         webUrl.setURL(pageUrl);
         webUrl.setDocid(docId);
         addSeed(webUrl);
@@ -620,7 +638,7 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
      *
      */
     public void addSeenUrl(String url, int docId) throws UnsupportedEncodingException {
-        WebURL webUrl = new WebURL();
+        WebURL webUrl = createEmptyWebURL(url);
         webUrl.setURL(url);
         webUrl.setDocid(docId);
         addSeenUrl(webUrl);

@@ -64,9 +64,9 @@ public class Frontier {
         this.counters = new Counters(env, config);
         try {
             if (dbName == null) {
-                workQueues = new WorkQueues(env, DATABASE_NAME, config.isResumableCrawling());
+                workQueues = createWorkQueues(env, config, DATABASE_NAME);
             } else {
-                workQueues = new WorkQueues(env, dbName, config.isResumableCrawling());
+                workQueues = createWorkQueues(env, config, dbName);
             }
             if (config.isResumableCrawling()) {
                 scheduledPages = counters.getValue(Counters.ReservedCounterNames.SCHEDULED_PAGES);
