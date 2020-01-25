@@ -448,31 +448,7 @@ public class WebCrawler implements Runnable {
                     onRedirectedStatusCode(page);
 
                     if (myController.getConfig().isFollowRedirects()) {
-                    	if (curURL.isFollowRedirectsInmediatly() && curURL.getMaxInmediateRedirects() > 0) {
-                            followRedirectInmediatly(curURL, movedToUrl);
-                            return;
-                        }
-                        WebURL tempWebURL = new WebURL();
-                        tempWebURL.setURL(movedToUrl);
-                        int newDocId = docIdServer.getDocId(tempWebURL);
-                        if (newDocId > 0) {
-                            logger.debug("Redirect page: {} is already seen", curURL);
-                            return;
-                        }
-                        
-                        WebURL webURL = createRedirectedWebURL(curURL, movedToUrl);
-                        if (shouldVisit(page, webURL)) {
-                            if (!shouldFollowLinksIn(webURL) || robotstxtServer.allows(webURL)) {
-                                performRedirect(webURL, curURL);
-                            } else {
-                                logger.debug(
-                                    "Not visiting: {} as per the server's \"robots.txt\" policy",
-                                    webURL.getURL());
-                            }
-                        } else {
-                            logger.debug("Not visiting: {} as per your \"shouldVisit\" policy",
-                                         webURL.getURL());
-                        }
+                        redirectionPhase(page, curURL, movedToUrl);
                     }
                 } else { // All other http codes other than 3xx & 200
                     String description =
@@ -597,6 +573,35 @@ public class WebCrawler implements Runnable {
         scheduleAll(toSchedule);
     }
 
+    protected void redirectionPhase(Page page, WebURL curURL, String movedToUrl)
+                                        throws IOException, InterruptedException, ParseException {
+    	if (curURL.isFollowRedirectsInmediatly() && curURL.getMaxInmediateRedirects() > 0) {
+            followRedirectInmediatly(curURL, movedToUrl);
+            return;
+        }
+    	WebURL tempWebURL = new WebURL();
+        tempWebURL.setURL(movedToUrl);
+        int newDocId = docIdServer.getDocId(tempWebURL);
+        if (newDocId > 0) {
+            logger.debug("Redirect page: {} is already seen", curURL);
+            return;
+        }
+
+        WebURL webURL = createRedirectedWebURL(curURL, movedToUrl);
+        if (shouldVisit(page, webURL)) {
+            if (!shouldFollowLinksIn(webURL) || robotstxtServer.allows(webURL)) {
+                performRedirect(webURL, curURL);
+            } else {
+                logger.debug(
+                    "Not visiting: {} as per the server's \"robots.txt\" policy",
+                    webURL.getURL());
+            }
+        } else {
+            logger.debug("Not visiting: {} as per your \"shouldVisit\" policy",
+                         webURL.getURL());
+        }
+    }
+
     protected void performRedirect(WebURL target, WebURL currURL) {
         target.setDocid(docIdServer.getNewDocID(target));
         schedule(target);
@@ -608,26 +613,6 @@ public class WebCrawler implements Runnable {
 
     protected void scheduleAll(List<WebURL> urls) {
         frontier.scheduleAll(urls);
-    }
-    /**
-     * Creates a new WebURL based on provided WebURL data.
-     *
-     * Subclases may use aditional parameters or use subclasses of WebURL.
-     *
-     * @param curURL
-     * @param movedToUrl
-     * @return
-     */
-    protected WebURL createRedirectedWebURL(WebURL curURL, String movedToUrl) {
-        WebURL webURL = createEmptyWebURL();
-        webURL.setTldList(myController.getTldList());
-        webURL.setURL(movedToUrl);
-        webURL.setParentDocid(curURL.getParentDocid());
-        webURL.setParentUrl(curURL.getParentUrl());
-        webURL.setDepth(curURL.getDepth());
-        webURL.setAnchor(curURL.getAnchor());
-        webURL.setDocid(-1);
-        return webURL;
     }
 
     /**
@@ -651,6 +636,27 @@ public class WebCrawler implements Runnable {
         webURL.setDocid(newDocId);
         webURL.setMaxInmediateRedirects((short)(curURL.getMaxInmediateRedirects() - 1));
         this.processPage(webURL);
+    }
+
+    /**
+     * Creates a new WebURL based on provided WebURL data.
+     *
+     * Subclases may use aditional parameters or use subclasses of WebURL.
+     *
+     * @param curURL
+     * @param movedToUrl
+     * @return
+     */
+    protected WebURL createRedirectedWebURL(WebURL curURL, String movedToUrl) {
+        WebURL webURL = createEmptyWebURL();
+        webURL.setTldList(myController.getTldList());
+        webURL.setURL(movedToUrl);
+        webURL.setParentDocid(curURL.getParentDocid());
+        webURL.setParentUrl(curURL.getParentUrl());
+        webURL.setDepth(curURL.getDepth());
+        webURL.setAnchor(curURL.getAnchor());
+        webURL.setDocid(-1);
+        return webURL;
     }
 
     public Thread getThread() {
