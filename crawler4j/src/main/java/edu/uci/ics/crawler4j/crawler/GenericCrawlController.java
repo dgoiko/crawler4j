@@ -46,7 +46,7 @@ import edu.uci.ics.crawler4j.util.IO;
  *
  * @author Yasser Ganjisaffar
  */
-public class GenericCrawlController<CrawlerType extends WebCrawler> {
+public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? extends ResultType>, ResultType> {
 
     static final Logger logger = LoggerFactory.getLogger(GenericCrawlController.class);
     private final CrawlConfig config;
@@ -61,7 +61,7 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
      * Once the crawling session finishes the controller collects the local data
      * of the crawler threads and stores them in this List.
      */
-    protected List<Object> crawlersLocalData = new ArrayList<>();
+    protected List<ResultType> crawlersLocalData = new ArrayList<>();
 
     /**
      * Is the crawling of this session finished?
@@ -187,11 +187,11 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
         return parser;
     }
 
-    public interface WebCrawlerFactory<T extends WebCrawler> {
+    public interface WebCrawlerFactory<T extends GenericWebCrawler<?>> {
         T newInstance() throws Exception;
     }
 
-    private static class SingleInstanceFactory<T extends WebCrawler>
+    private static class SingleInstanceFactory<T extends GenericWebCrawler<?>>
         implements WebCrawlerFactory<T> {
 
         final T instance;
@@ -206,7 +206,7 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
         }
     }
 
-    private static class DefaultWebCrawlerFactory<T extends WebCrawler>
+    private static class DefaultWebCrawlerFactory<T extends GenericWebCrawler<?>>
         implements WebCrawlerFactory<T> {
         final Class<T> clazz;
 
@@ -316,7 +316,7 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
                 logger.info("Crawler {} started", i);
             }
 
-            final GenericCrawlController<CrawlerType> controller = this;
+            final GenericCrawlController<CrawlerType, ResultType> controller = this;
             Thread monitorThread = new Thread(new Runnable() {
 
                 @Override
@@ -493,7 +493,7 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
      *
      * @return List of Objects which are your local data
      */
-    public List<Object> getCrawlersLocalData() {
+    public List<ResultType> getCrawlersLocalData() {
         return crawlersLocalData;
     }
 
@@ -512,7 +512,7 @@ public class GenericCrawlController<CrawlerType extends WebCrawler> {
      * @param crawler
      * @return
      */
-    protected Object collectCrawlerData(CrawlerType crawler) {
+    protected ResultType collectCrawlerData(CrawlerType crawler) {
         return crawler.getMyLocalData();
     }
 

@@ -29,7 +29,7 @@ import edu.uci.ics.crawler4j.url.TLDList;
  * @author Yasser Ganjisaffar
  */
 
-public class CrawlController extends GenericCrawlController<WebCrawler> {
+public class CrawlController extends GenericCrawlController<WebCrawler, Object> {
 
     public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
             RobotstxtServer robotstxtServer, TLDList tldList, String docIdDbName, String pendingDbName,
