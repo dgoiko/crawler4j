@@ -168,7 +168,7 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
     /**
      * Creates the Frontier for this instance. Subclasses can create custom Frontiers
      * @param config configuration procided to the CrawlController
-     * @return
+     * @return new instance of Frontier
      */
     protected Frontier createFrontier(CrawlConfig config, String pendingDbName, String inProcessDbName) {
         return new Frontier(env, config, pendingDbName, inProcessDbName);
@@ -177,7 +177,7 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
     /**
      * Creates an empty WebURL. Subclases can override this to create subclases of WebURL instead.
      * @param nonCanonicalString url before being transformed into canonical. It is ignored in default implementation
-     * @return
+     * @return new empty instance of WebURL
      */
     protected WebURL createEmptyWebURL(String nonCanonicalString) {
         return new WebURL();
@@ -510,7 +510,7 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
      * results extraction with custom behaviour or processing.
      *
      * @param crawler
-     * @return
+     * @return the data extracted from the crawler
      */
     protected ResultType collectCrawlerData(CrawlerType crawler) {
         return crawler.getMyLocalData();

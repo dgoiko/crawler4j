@@ -11,8 +11,8 @@ allprojects {
     apply plugin: 'idea'
     apply plugin: 'eclipse'
 
-    group = 'edu.uci.ics'
-    version = '4.5.0-SNAPSHOT'
+    group = 'es.goikosoft'
+    version = '4.4.1'
 }
 
 subprojects {

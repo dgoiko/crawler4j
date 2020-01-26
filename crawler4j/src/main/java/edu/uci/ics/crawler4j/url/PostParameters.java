@@ -32,7 +32,7 @@ public interface PostParameters {
      * Gets the parameters as a List of BasicNameValuePair.
      *
      * Implementations may return a copy that does not affect the internal list, but they should clearly state it.
-     * @return
+     * @return a list containing BasicNameValuePair that represent the complete set of post parameters
      */
     List<BasicNameValuePair> getAsList();
 }

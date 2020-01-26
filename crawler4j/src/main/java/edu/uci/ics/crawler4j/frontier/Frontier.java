@@ -228,7 +228,7 @@ public class Frontier {
     /**
      * Creates the WorkQueues for this frontier. Can be overriden to create
      * subclases of WorkQueues instead
-     * @return
+     * @return new instance of WorkQueues
      * @see Environment#openDatabase
      */
     protected WorkQueues createWorkQueues(Environment env, CrawlConfig config, String databaseName) {

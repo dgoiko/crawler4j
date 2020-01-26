@@ -645,7 +645,7 @@ public class GenericWebCrawler<ResultType> implements Runnable {
      *
      * @param curURL
      * @param movedToUrl
-     * @return
+     * @return new instance of GET WebURL with the fields of curURL copied and pointint to movedToUrl
      */
     protected WebURL createRedirectedWebURL(WebURL curURL, String movedToUrl) {
         WebURL webURL = createEmptyWebURL();

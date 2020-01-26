@@ -68,7 +68,7 @@ public class WebURL implements Serializable {
      *
      * @param key
      * @param value
-     * @return
+     * @return true if there was a modification in post parameters, false otherwise
      * @throws IllegalArgumentException if <code>key</code> is <code>null</code>
      * @see PostParameters#addParameter(String, String)
      */
@@ -82,7 +82,7 @@ public class WebURL implements Serializable {
     /**
      * Returns true if this WebURL represents a POST request.
      *
-     * @return
+     * @return true if this WebURL represents a POST request.
      */
     public boolean isPost() {
         return post;
@@ -343,8 +343,9 @@ public class WebURL implements Serializable {
     /**
      * Encodes the URL and the post parameters in a string to store in the DocIDServer.
      *
-     * This is what identifies this URL as already visited or new.
-     * @return
+     * This is what identifies this URL as already visited or new. Subclases may convert this into
+     * a non-decodificable String.
+     * @return String representation of this WebURL.
      */
     public String encode() {
         return encodeWebURL(this);
@@ -354,8 +355,8 @@ public class WebURL implements Serializable {
      *    Encodes the URL and the post parameters in a string to store in the DocIDServer.
      *
      * This is what identifies this URL as already visited or new.
-     * @param url
-     * @return
+     * @param url the WebURL to encode
+     * @return String representation of this WebURL.
      */
     public static String encodeWebURL(WebURL url) {
         if (url == null || url.getURL() == null) {
