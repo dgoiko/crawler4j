@@ -38,6 +38,7 @@ import com.goikosoft.crawler4j.url.WebURL;
 import com.goikosoft.crawler4j.util.Util;
 
 /**
+ * Modified by Dario Goikoetxea to allow timeoutable regex
  * @author Yasser Ganjisaffar
  */
 public class RobotstxtServer {

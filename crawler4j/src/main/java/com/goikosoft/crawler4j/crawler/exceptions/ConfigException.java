@@ -1,9 +1,9 @@
 package com.goikosoft.crawler4j.crawler.exceptions;
 
 /**
- * Created by Dario Goikoetxea on 24/1/2020.
- *
  * Thrown when there is a problem with the configuration
+ *
+ * @author Dario Goikoetxea
  */
 public class ConfigException extends Exception {
     private static final long serialVersionUID = -7376208295930945704L;

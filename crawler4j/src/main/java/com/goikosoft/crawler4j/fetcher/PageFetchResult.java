@@ -30,6 +30,7 @@ import com.goikosoft.crawler4j.crawler.Page;
 import com.goikosoft.crawler4j.url.WebURL;
 
 /**
+ * Modified by Dario Goikoetxea to represent the URL as WebURL
  * @author Yasser Ganjisaffar
  */
 public class PageFetchResult {

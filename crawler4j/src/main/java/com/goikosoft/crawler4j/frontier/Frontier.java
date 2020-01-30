@@ -28,6 +28,7 @@ import com.sleepycat.je.DatabaseException;
 import com.sleepycat.je.Environment;
 
 /**
+ * Modified by Dario Goikoetxea to make it easier to create subclases and use custom DB names
  * @author Yasser Ganjisaffar
  */
 

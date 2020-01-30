@@ -31,6 +31,7 @@ import com.sleepycat.je.OperationStatus;
 import com.sleepycat.je.Transaction;
 
 /**
+ * Modified by Dario Goikoetxea to use custom database names and easier subclassing
  * @author Yasser Ganjisaffar
  */
 public class WorkQueues {

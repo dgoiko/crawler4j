@@ -25,6 +25,7 @@ import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;
 
 /**
+ * Modified by Dario Goikoetxea to add POST capabilities
  * @author Yasser Ganjisaffar
  */
 

@@ -76,6 +76,7 @@ import com.goikosoft.crawler4j.url.URLCanonicalizer;
 import com.goikosoft.crawler4j.url.WebURL;
 
 /**
+ * Modified by Dario Goikoetxea to use POST and implement PageFetcherInterface
  * @author Yasser Ganjisaffar
  */
 public class PageFetcher implements PageFetcherInterface {

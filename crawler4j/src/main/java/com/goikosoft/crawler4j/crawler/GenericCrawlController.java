@@ -43,6 +43,8 @@ import com.sleepycat.je.EnvironmentConfig;
  * The controller that manages a crawling session. This class creates the
  * crawler threads and monitors their progress.
  *
+ * Modified by Dario Goikoetxea to be generic
+ *
  * @author Yasser Ganjisaffar
  */
 public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? extends ResultType>, ResultType> {

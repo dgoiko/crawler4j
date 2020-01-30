@@ -136,8 +136,8 @@ publishing {
     }
     repositories {
         maven {
-            def releasesRepoUrl = "$relPrivateRepoUrl"
-            def snapshotsRepoUrl = "$snapPrivateRepoUrl"
+            def releasesRepoUrl = "$relCentralRepoUrl"
+            def snapshotsRepoUrl = "$snapCentralRepoUrl"
             url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
             credentials {
                 username "$sonatypeUsername"

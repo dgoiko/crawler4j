@@ -25,6 +25,7 @@ import com.sleepycat.bind.tuple.TupleInput;
 import com.sleepycat.bind.tuple.TupleOutput;
 
 /**
+ * Modified by Dario Goikoetxea to include POST capabilities
  * @author Yasser Ganjisaffar
  */
 public class WebURLTupleBinding extends TupleBinding<WebURL> {

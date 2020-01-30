@@ -29,6 +29,8 @@ import com.goikosoft.crawler4j.util.Net;
 import com.goikosoft.crawler4j.util.Util;
 
 /**
+ *
+ * Modified by Dario Goikoetxea to extend ParserInterface
  * @author Yasser Ganjisaffar
  */
 public class Parser implements ParserInterface {

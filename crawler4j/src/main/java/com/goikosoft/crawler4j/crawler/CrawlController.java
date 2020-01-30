@@ -26,6 +26,8 @@ import com.goikosoft.crawler4j.url.TLDList;
  * The controller that manages a crawling session. This class creates the
  * crawler threads and monitors their progress.
  *
+ * Modified by Dario Goikoetxea to be just a concrete implementation of GenericCrawlController
+ *
  * @author Yasser Ganjisaffar
  */
 

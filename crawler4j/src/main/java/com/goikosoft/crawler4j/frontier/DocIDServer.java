@@ -31,6 +31,7 @@ import com.sleepycat.je.Environment;
 import com.sleepycat.je.OperationStatus;
 
 /**
+ * Modified by Dario Goikoetxea to add POST capabilities
  * @author Yasser Ganjisaffar
  */
 

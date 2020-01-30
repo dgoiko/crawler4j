@@ -32,6 +32,7 @@ import com.sleepycat.je.Transaction;
  * assigned to crawlers but are not yet processed.
  * It is used for resuming a previous crawl.
  *
+ * Modified by Dario Goikoetxea to use custom database names
  * @author Yasser Ganjisaffar
  */
 public class InProcessPagesDB extends WorkQueues {

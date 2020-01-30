@@ -6,6 +6,10 @@ import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
 
+/**
+ * @author Dario Goikoetxea
+ *
+ */
 public class SimplePostParameters implements PostParameters {
 
     public static final String PAIR_SEPARATOR = "``--``";

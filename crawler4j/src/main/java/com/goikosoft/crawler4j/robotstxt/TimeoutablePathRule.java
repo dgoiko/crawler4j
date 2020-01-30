@@ -6,6 +6,11 @@ import org.slf4j.LoggerFactory;
 import com.goikosoft.crawler4j.crawler.exceptions.RegexpTimeoutException;
 import com.goikosoft.crawler4j.util.RegularExpressionUtils;
 
+/**
+ * PathRule with timeoutable RegExp
+ * @author Dario Goikoetxea
+ *
+ */
 public class TimeoutablePathRule extends PathRule {
     protected static final Logger logger = LoggerFactory.getLogger(TimeoutablePathRule.class);
     public static final int defaultCheckInterval = 30000000;

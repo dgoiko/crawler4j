@@ -45,6 +45,7 @@ import com.goikosoft.crawler4j.url.WebURL;
 /**
  * WebCrawler class in the Runnable class that is executed by each crawler thread.
  *
+ * Modified by Dario Goikoetxea to be generic
  * @author Yasser Ganjisaffar
  */
 public class GenericWebCrawler<ResultType> implements Runnable {

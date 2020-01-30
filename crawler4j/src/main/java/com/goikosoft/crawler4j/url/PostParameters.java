@@ -6,7 +6,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 /**
  *
- * @author Dario
+ * @author Dario Goikoetxea
  *
  */
 public interface PostParameters {
