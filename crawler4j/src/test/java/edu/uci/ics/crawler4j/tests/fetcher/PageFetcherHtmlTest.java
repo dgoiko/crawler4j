@@ -6,11 +6,10 @@ import org.junit.Test;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
-import edu.uci.ics.crawler4j.crawler.Page;
-import edu.uci.ics.crawler4j.fetcher.PageFetcher;
-import edu.uci.ics.crawler4j.url.WebURL;
+import com.goikosoft.crawler4j.crawler.CrawlConfig;
+import com.goikosoft.crawler4j.crawler.Page;
+import com.goikosoft.crawler4j.fetcher.PageFetcher;
+import com.goikosoft.crawler4j.url.WebURL;
 
 public class PageFetcherHtmlTest {
 

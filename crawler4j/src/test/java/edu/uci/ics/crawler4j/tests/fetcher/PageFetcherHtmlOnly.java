@@ -9,11 +9,11 @@ import java.util.Date;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpHead;
 
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
-import edu.uci.ics.crawler4j.crawler.exceptions.PageBiggerThanMaxSizeException;
-import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
-import edu.uci.ics.crawler4j.fetcher.PageFetcher;
-import edu.uci.ics.crawler4j.url.WebURL;
+import com.goikosoft.crawler4j.crawler.CrawlConfig;
+import com.goikosoft.crawler4j.crawler.exceptions.PageBiggerThanMaxSizeException;
+import com.goikosoft.crawler4j.fetcher.PageFetchResult;
+import com.goikosoft.crawler4j.fetcher.PageFetcher;
+import com.goikosoft.crawler4j.url.WebURL;
 
 public class PageFetcherHtmlOnly extends PageFetcher {
 

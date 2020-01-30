@@ -7,7 +7,7 @@ import java.nio.charset.Charset;
 
 import org.junit.Test;
 
-import edu.uci.ics.crawler4j.url.URLCanonicalizer;
+import com.goikosoft.crawler4j.url.URLCanonicalizer;
 
 public class URLCanonicalizerTest {
 

@@ -11,7 +11,7 @@ allprojects {
     apply plugin: 'idea'
     apply plugin: 'eclipse'
 
-    group = 'es.goikosoft'
+    group = 'com.goikosoft.crawler4j'
     version = '4.4.1'
 }
 

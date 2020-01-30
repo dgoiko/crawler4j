@@ -1,0 +1,78 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.goikosoft.crawler4j.frontier;
+
+import org.apache.http.message.BasicNameValuePair;
+
+import com.goikosoft.crawler4j.url.WebURL;
+import com.sleepycat.bind.tuple.TupleBinding;
+import com.sleepycat.bind.tuple.TupleInput;
+import com.sleepycat.bind.tuple.TupleOutput;
+
+/**
+ * @author Yasser Ganjisaffar
+ */
+public class WebURLTupleBinding extends TupleBinding<WebURL> {
+
+    @Override
+    public WebURL entryToObject(TupleInput input) {
+        WebURL webURL = new WebURL();
+        webURL.setURL(input.readString());
+        webURL.setDocid(input.readInt());
+        webURL.setParentDocid(input.readInt());
+        webURL.setParentUrl(input.readString());
+        webURL.setDepth(input.readShort());
+        webURL.setPriority(input.readByte());
+        webURL.setAnchor(input.readString());
+        webURL.setFollowRedirectsInmediatly(input.readBoolean());
+        webURL.setMaxInmediateRedirects(input.readShort());
+        webURL.setPost(input.readBoolean());
+        if (webURL.isPost()) {
+            try {
+                while (true) {
+                    String name = input.readString();
+                    String value = input.readString();
+                    webURL.addPostParameter(name, value);
+                }
+            } catch (IndexOutOfBoundsException e) {
+                // Do nothing, no more parameters to fetch
+            }
+        }
+        return webURL;
+    }
+
+    @Override
+    public void objectToEntry(WebURL url, TupleOutput output) {
+        output.writeString(url.getURL());
+        output.writeInt(url.getDocid());
+        output.writeInt(url.getParentDocid());
+        output.writeString(url.getParentUrl());
+        output.writeShort(url.getDepth());
+        output.writeByte(url.getPriority());
+        output.writeString(url.getAnchor());
+        output.writeBoolean(url.isFollowRedirectsInmediatly());
+        output.writeShort(url.getMaxInmediateRedirects());
+        output.writeBoolean(url.isPost());
+        if (url.isPost() && url.getParamsPost() != null) {
+            for (BasicNameValuePair param : url.getParamsPost().getAsList()) {
+                output.writeString(param.getName());
+                output.writeString(param.getValue());
+            }
+        }
+    }
+}
