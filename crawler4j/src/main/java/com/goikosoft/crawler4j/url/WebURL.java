@@ -51,6 +51,7 @@ public class WebURL implements Serializable {
     private String tag;
     private Map<String, String> attributes;
     private TLDList tldList;
+    private int failedFetches = 0;
     private boolean followRedirectsInmediatly = false;
     private short maxInmediateRedirects = 10;
     private boolean post;
@@ -315,6 +316,18 @@ public class WebURL implements Serializable {
 
     protected PostParameters createEmptyPostParams() {
         return new SimplePostParameters();
+    }
+
+    public int getFailedFetches() {
+        return failedFetches;
+    }
+
+    public void setFailedFetches(int failedFetches) {
+        this.failedFetches = failedFetches;
+    }
+
+    public void incrementFailedFetches() {
+        this.failedFetches++;
     }
 
     @Override
