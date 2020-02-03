@@ -218,7 +218,12 @@ public class CrawlConfig implements Cloneable {
      * Maximun number of times a failing WebURL will be tried again before giving up.
      * Default value is zero.
      */
-    private int maxRetries = 0;
+    private short maxRetries = 0;
+
+    /**
+     * If true, it will retry non-responding servers while maxRetries requeriment it met.
+     */
+    private boolean allowRetryConnectionError = false;
 
     /**
      * DNS resolver to use, {@link SystemDefaultDnsResolver} is default.
@@ -739,12 +744,20 @@ public class CrawlConfig implements Cloneable {
         this.batchReadSize = batchReadSize;
     }
 
-    public int getMaxRetries() {
+    public short getMaxRetries() {
         return maxRetries;
     }
 
-    public void setMaxRetries(int maxRetries) {
+    public void setMaxRetries(short maxRetries) {
         this.maxRetries = maxRetries;
+    }
+
+    public boolean isAllowRetryConnectionError() {
+        return allowRetryConnectionError;
+    }
+
+    public void setAllowRetryConnectionError(boolean allowRetryConnectionError) {
+        this.allowRetryConnectionError = allowRetryConnectionError;
     }
 
     @Override
