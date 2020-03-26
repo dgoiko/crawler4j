@@ -21,7 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -85,6 +88,9 @@ public class CrawlController {
     protected final Environment env;
 
     protected Parser parser;
+    
+    private final Object stopMutex = new Object();
+    private Set<Integer> toStop;
 
     public CrawlController(CrawlConfig config, PageFetcher pageFetcher,
                            RobotstxtServer robotstxtServer) throws Exception {
@@ -99,6 +105,7 @@ public class CrawlController {
     public CrawlController(CrawlConfig config, PageFetcher pageFetcher, Parser parser,
                            RobotstxtServer robotstxtServer, TLDList tldList) throws Exception {
         config.validate();
+        toStop = new HashSet<Integer>();
         this.config = config;
 
         File folder = new File(config.getCrawlStorageFolder());
@@ -385,6 +392,19 @@ public class CrawlController {
                                         return;
                                     }
                                 }
+                                synchronized(stopMutex) {
+                                	Iterator<Integer> it = toStop.iterator();
+                                	while (it.hasNext()) {
+                                		Integer id = it.next();
+                                		for(T crawler : crawlers) {
+                                			if(id.equals(crawler.getMyId())) {
+                                				crawler.stop();
+                                			}
+                                		}
+                                		it.remove();
+                                	}
+                                }
+                                
                             }
                         }
                     } catch (Throwable e) {
@@ -423,6 +443,13 @@ public class CrawlController {
                 logger.error("Error happened", e);
             }
         }
+    }
+    
+    public void stopSpecificCrawler(Integer identifier) {
+    	if(identifier == null) throw new NullPointerException("identifier cannot be null");
+    	synchronized(stopMutex) {
+        	toStop.add(identifier);
+    	}
     }
 
     /**

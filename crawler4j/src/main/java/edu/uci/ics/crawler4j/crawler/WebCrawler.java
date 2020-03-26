@@ -105,7 +105,13 @@ public class WebCrawler implements Runnable {
     private Throwable error;
 
     private int batchReadSize;
+    
+    private volatile boolean stopped = false;
 
+    public void stop() {
+    	stopped = true;
+    }
+    
     /**
      * Initializes the current instance of the crawler
      *
@@ -345,6 +351,8 @@ public class WebCrawler implements Runnable {
                 if (myController.getConfig().isHaltOnError() && myController.getError() != null) {
                     halt = true;
                     logger.info("halting because an error has occurred on another thread");
+                }else {
+                	halt = stopped;
                 }
             }
         } catch (Throwable t) {
