@@ -351,30 +351,25 @@ public class PageFetcher implements PageFetcherInterface {
      * @param url the url to be fetched
      * @return the HttpUriRequest for the given url
      */
-    @Deprecated
-    protected HttpUriRequest newHttpUriRequest(String url) {
-        return new HttpGet(url);
-    }
-
-    /**
-     * Creates a new HttpUriRequest for the given url. The default is to create a HttpGet without
-     * any further configuration. Subclasses may override this method and provide their own logic.
-     *
-     * @param url the url to be fetched
-     * @return the HttpUriRequest for the given url
-     */
     protected HttpUriRequest newHttpUriRequest(WebURL url) {
-        if (!url.isPost()) {
-            return this.newHttpUriRequest(url.getURL());
+        HttpUriRequest req;
+        if (url.isPost()) {
+            HttpPost reqTemp = new HttpPost(url.getURL());
+            if (url.getParamsPost() != null) {
+                List<BasicNameValuePair> pairs = url.getParamsPost().getAsList();
+                if (pairs != null && pairs.size() > 0) {
+                    // Unnecesary comprobaion.
+                    reqTemp.setEntity(new UrlEncodedFormEntity(pairs, StandardCharsets.UTF_8));
+                }
+            }
+            req = reqTemp;
+        } else {
+            req = new HttpGet(url.getURL());
         }
-        HttpPost req = new HttpPost(url.getURL());
-        if (url.getParamsPost() == null || url.getParamsPost().isEmpty()) {
-            return req;
-        }
-        List<BasicNameValuePair> pairs = url.getParamsPost().getAsList();
-        if (pairs != null && pairs.size() > 0) {
-            // Unnecesary comprobaion.
-            req.setEntity(new UrlEncodedFormEntity(pairs, StandardCharsets.UTF_8));
+        if (url.getHeaders() != null) {
+            for (Header header : url.getHeaders()) {
+                req.addHeader(header);
+            }
         }
         return req;
     }

@@ -18,7 +18,12 @@
 package com.goikosoft.crawler4j.url;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
 
 import com.google.common.net.InternetDomainName;
 import com.sleepycat.persist.model.Entity;
@@ -56,6 +61,7 @@ public class WebURL implements Serializable {
     private short maxInmediateRedirects = 10;
     private boolean post;
     private PostParameters paramsPost;
+    private List<Header> headers;
 
     public PostParameters getParamsPost() {
         return paramsPost;
@@ -330,6 +336,28 @@ public class WebURL implements Serializable {
         this.failedFetches++;
     }
 
+    public List<Header> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(List<Header> headers) {
+        this.headers = headers;
+    }
+
+    public void addHeader(Header header) {
+        if (this.headers == null) {
+            this.headers = new ArrayList<Header>();
+        }
+        this.headers.add(header);
+    }
+
+    public void addHeader(String name, String value) {
+        if (this.headers == null) {
+            this.headers = new ArrayList<Header>();
+        }
+        this.headers.add(new BasicHeader(name, value));
+    }
+
     @Override
     public int hashCode() {
         return url.hashCode();
@@ -443,5 +471,4 @@ public class WebURL implements Serializable {
         }
         return false;
     }
-
 }

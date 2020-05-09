@@ -17,6 +17,9 @@
 
 package com.goikosoft.crawler4j.frontier;
 
+import java.util.List;
+
+import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.goikosoft.crawler4j.url.WebURL;
@@ -32,7 +35,7 @@ public class WebURLTupleBinding extends TupleBinding<WebURL> {
 
     @Override
     public WebURL entryToObject(TupleInput input) {
-        WebURL webURL = new WebURL();
+        WebURL webURL = createInstance();
         webURL.setURL(input.readString());
         webURL.setDocid(input.readInt());
         webURL.setParentDocid(input.readInt());
@@ -44,18 +47,27 @@ public class WebURLTupleBinding extends TupleBinding<WebURL> {
         webURL.setFollowRedirectsInmediatly(input.readBoolean());
         webURL.setMaxInmediateRedirects(input.readShort());
         webURL.setPost(input.readBoolean());
+
+        short numHeaders = input.readShort();
+        for (short i = 0; i < numHeaders; i++) {
+            String name = input.readString();
+            String value = input.readString();
+            webURL.addHeader(name, value);
+        }
+
         if (webURL.isPost()) {
-            try {
-                while (true) {
-                    String name = input.readString();
-                    String value = input.readString();
-                    webURL.addPostParameter(name, value);
-                }
-            } catch (IndexOutOfBoundsException e) {
-                // Do nothing, no more parameters to fetch
+            short numParams = input.readShort();
+            for (short i = 0; i < numParams; i++) {
+                String name = input.readString();
+                String value = input.readString();
+                webURL.addPostParameter(name, value);
             }
         }
         return webURL;
+    }
+
+    protected WebURL createInstance() {
+        return new WebURL();
     }
 
     @Override
@@ -71,10 +83,28 @@ public class WebURLTupleBinding extends TupleBinding<WebURL> {
         output.writeBoolean(url.isFollowRedirectsInmediatly());
         output.writeShort(url.getMaxInmediateRedirects());
         output.writeBoolean(url.isPost());
-        if (url.isPost() && url.getParamsPost() != null) {
-            for (BasicNameValuePair param : url.getParamsPost().getAsList()) {
-                output.writeString(param.getName());
-                output.writeString(param.getValue());
+
+        List<Header> headers = url.getHeaders();
+        if (headers != null) {
+            output.writeShort(headers.size());
+            for (Header header : headers) {
+                output.writeString(header.getName());
+                output.writeString(header.getValue());
+            }
+        } else {
+            output.writeShort(0);
+        }
+
+        if (url.isPost()) {
+            if (url.getParamsPost() != null) {
+                List<BasicNameValuePair> params = url.getParamsPost().getAsList();
+                output.writeShort(params.size());
+                for (BasicNameValuePair param : params) {
+                    output.writeString(param.getName());
+                    output.writeString(param.getValue());
+                }
+            } else {
+                output.writeShort(0);
             }
         }
     }
