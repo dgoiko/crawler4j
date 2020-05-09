@@ -351,6 +351,18 @@ public class PageFetcher implements PageFetcherInterface {
      * @param url the url to be fetched
      * @return the HttpUriRequest for the given url
      */
+    @Deprecated
+    protected HttpUriRequest newHttpUriRequest(String url) {
+        return new HttpGet(url);
+    }
+
+    /**
+     * Creates a new HttpUriRequest for the given url. The default is to create a HttpGet without
+     * any further configuration. Subclasses may override this method and provide their own logic.
+     *
+     * @param url the url to be fetched
+     * @return the HttpUriRequest for the given url
+     */
     protected HttpUriRequest newHttpUriRequest(WebURL url) {
         HttpUriRequest req;
         if (url.isPost()) {
@@ -364,7 +376,7 @@ public class PageFetcher implements PageFetcherInterface {
             }
             req = reqTemp;
         } else {
-            req = new HttpGet(url.getURL());
+            req = newHttpUriRequest(url.getURL());
         }
         if (url.getHeaders() != null) {
             for (Header header : url.getHeaders()) {
