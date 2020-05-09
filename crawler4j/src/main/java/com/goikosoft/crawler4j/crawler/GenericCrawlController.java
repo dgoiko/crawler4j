@@ -432,6 +432,8 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
                         } else {
                             logger.error("Unexpected Error", e);
                         }
+                    } finally {
+                        onFinish();
                     }
                 }
 
@@ -454,6 +456,12 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
                 logger.error("Error happened", e);
             }
         }
+    }
+
+    /**
+     * This function will be called when the monitorThread finishes. Everything is closed by this momment
+     */
+    protected void onFinish() {
     }
 
     /**
