@@ -1,8 +1,8 @@
-package edu.uci.ics.crawler4j.selenium;
+package com.goikosoft.crawler4j.selenium;
 
 import java.util.List;
 
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import com.goikosoft.crawler4j.crawler.CrawlConfig;
 
 public class SeleniumCrawlConfig extends CrawlConfig {
 

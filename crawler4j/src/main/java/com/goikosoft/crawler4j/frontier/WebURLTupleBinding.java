@@ -47,6 +47,7 @@ public class WebURLTupleBinding extends TupleBinding<WebURL> {
         webURL.setFollowRedirectsInmediatly(input.readBoolean());
         webURL.setMaxInmediateRedirects(input.readShort());
         webURL.setPost(input.readBoolean());
+        webURL.setSelenium(input.readBoolean());
 
         short numHeaders = input.readShort();
         for (short i = 0; i < numHeaders; i++) {
@@ -83,6 +84,7 @@ public class WebURLTupleBinding extends TupleBinding<WebURL> {
         output.writeBoolean(url.isFollowRedirectsInmediatly());
         output.writeShort(url.getMaxInmediateRedirects());
         output.writeBoolean(url.isPost());
+        output.writeBoolean(url.isSelenium());
 
         List<Header> headers = url.getHeaders();
         if (headers != null) {

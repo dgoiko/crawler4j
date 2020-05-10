@@ -41,6 +41,7 @@ public class PageFetchResult implements PageFetchResultInterface {
     protected int statusCode;
     protected HttpEntity entity = null;
     protected Header[] responseHeaders = null;
+    @Deprecated
     protected String fetchedUrl = null;
     protected WebURL fetchedWebUrl = null;
     protected String movedToUrl = null;

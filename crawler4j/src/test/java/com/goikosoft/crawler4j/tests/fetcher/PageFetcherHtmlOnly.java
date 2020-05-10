@@ -1,4 +1,4 @@
-package edu.uci.ics.crawler4j.tests.fetcher;
+package com.goikosoft.crawler4j.tests.fetcher;
 
 import java.io.IOException;
 import java.security.KeyManagementException;

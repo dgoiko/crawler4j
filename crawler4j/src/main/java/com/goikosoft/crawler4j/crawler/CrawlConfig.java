@@ -33,7 +33,6 @@ import com.goikosoft.crawler4j.crawler.authentication.AuthInfo;
 import com.goikosoft.crawler4j.crawler.exceptions.ConfigException;
 import com.machinepublishers.jbrowserdriver.Settings;
 
-
 public class CrawlConfig implements Cloneable {
 
     /**

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package edu.uci.ics.crawler4j.tests.fetcher;
+package com.goikosoft.crawler4j.tests.fetcher;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -28,14 +28,13 @@ import org.openqa.selenium.NoSuchElementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.goikosoft.crawler4j.crawler.CrawlConfig;
+import com.goikosoft.crawler4j.fetcher.PageFetcherInterface;
+import com.goikosoft.crawler4j.selenium.PageFetchResultSelenium;
+import com.goikosoft.crawler4j.url.URLCanonicalizer;
+import com.goikosoft.crawler4j.url.WebURL;
 import com.machinepublishers.jbrowserdriver.JBrowserDriver;
 import com.machinepublishers.jbrowserdriver.Settings;
-
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
-import edu.uci.ics.crawler4j.fetcher.PageFetcherInterface;
-import edu.uci.ics.crawler4j.selenium.PageFetchResultSelenium;
-import edu.uci.ics.crawler4j.url.URLCanonicalizer;
-import edu.uci.ics.crawler4j.url.WebURL;
 
 /**
  *
@@ -88,7 +87,7 @@ public class PageFetcherSeleniumOnly implements PageFetcherInterface {
             driver.get(toFetchURL);
 
             fetchResult.setDriver(driver);
-            fetchResult.setFetchedUrl(toFetchURL);
+            fetchResult.setFetchedWebUrl(webUrl);
             // Setting HttpStatus
             int statusCode = driver.getStatusCode();
 
@@ -115,11 +114,13 @@ public class PageFetcherSeleniumOnly implements PageFetcherInterface {
 
                 throw new IOException("Redirection not supported for Selenium. It should follow it automatically");
             } else if (statusCode >= 200 && statusCode <= 299) { // is 2XX, everything looks ok
-                fetchResult.setFetchedUrl(toFetchURL);
+                fetchResult.setFetchedWebUrl(webUrl);
                 String uri = driver.getCurrentUrl();
                 if (!uri.equals(toFetchURL)) {
                     if (!URLCanonicalizer.getCanonicalURL(uri).equals(toFetchURL)) {
-                        fetchResult.setFetchedUrl(uri);
+                        WebURL newUrl = new WebURL();
+                        newUrl.setURL(uri);
+                        fetchResult.setFetchedWebUrl(newUrl);
                     }
                 }
 

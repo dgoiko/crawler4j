@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package edu.uci.ics.crawler4j.selenium;
+package com.goikosoft.crawler4j.selenium;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -25,10 +25,10 @@ import org.apache.http.HttpEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.goikosoft.crawler4j.crawler.Page;
+import com.goikosoft.crawler4j.fetcher.PageFetchResultInterface;
+import com.goikosoft.crawler4j.url.WebURL;
 import com.machinepublishers.jbrowserdriver.JBrowserDriver;
-
-import edu.uci.ics.crawler4j.crawler.Page;
-import edu.uci.ics.crawler4j.fetcher.PageFetchResultInterface;
 
 /**
  * @author Dario Goikoetxea
@@ -40,6 +40,8 @@ public class PageFetchResultSelenium implements PageFetchResultInterface {
     private boolean haltOnError;
     protected int statusCode;
     protected JBrowserDriver driver = null;
+    protected WebURL fetchedWebUrl = null;
+    @Deprecated
     protected String fetchedUrl = null;
     protected String movedToUrl = null;
 
@@ -70,9 +72,25 @@ public class PageFetchResultSelenium implements PageFetchResultInterface {
         return fetchedUrl;
     }
 
-    @Override
+    @Deprecated
     public void setFetchedUrl(String fetchedUrl) {
-        this.fetchedUrl = fetchedUrl;
+        WebURL fetchedWebURL = new WebURL();
+        fetchedWebURL.setURL(fetchedUrl);
+        setFetchedWebUrl(fetchedWebURL);
+    }
+
+    public WebURL getFetchedWebUrl() {
+        return fetchedWebUrl;
+    }
+
+    public void setFetchedWebUrl(WebURL fetchedWebUrl) {
+        this.fetchedWebUrl = fetchedWebUrl;
+        // Compatibility until deprecated methods are deleted
+        if (fetchedWebUrl != null) {
+            this.fetchedUrl = fetchedWebUrl.getURL();
+        } else {
+            this.fetchedUrl = null;
+        }
     }
 
     @Override

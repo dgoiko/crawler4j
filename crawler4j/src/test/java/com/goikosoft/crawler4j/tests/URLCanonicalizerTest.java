@@ -1,4 +1,4 @@
-package edu.uci.ics.crawler4j.tests;
+package com.goikosoft.crawler4j.tests;
 
 import static org.junit.Assert.assertEquals;
 

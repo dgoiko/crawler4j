@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 import com.goikosoft.crawler4j.crawler.CrawlConfig;
 import com.goikosoft.crawler4j.crawler.Page;
 import com.goikosoft.crawler4j.crawler.exceptions.PageBiggerThanMaxSizeException;
-import com.goikosoft.crawler4j.fetcher.PageFetchResult;
+import com.goikosoft.crawler4j.fetcher.PageFetchResultInterface;
 import com.goikosoft.crawler4j.fetcher.PageFetcherInterface;
 import com.goikosoft.crawler4j.url.WebURL;
 import com.goikosoft.crawler4j.util.Util;
@@ -106,6 +106,7 @@ public class RobotstxtServer {
 
     private HostDirectives fetchDirectives(URL url) throws IOException, InterruptedException {
         WebURL robotsTxtUrl = new WebURL();
+        robotsTxtUrl.setSelenium(false);
         String host = getHost(url);
         String port = ((url.getPort() == url.getDefaultPort()) || (url.getPort() == -1)) ? "" :
                       (":" + url.getPort());

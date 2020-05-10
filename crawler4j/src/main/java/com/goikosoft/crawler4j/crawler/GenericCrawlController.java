@@ -29,7 +29,9 @@ import org.slf4j.LoggerFactory;
 
 import com.goikosoft.crawler4j.fetcher.PageFetcherInterface;
 import com.goikosoft.crawler4j.frontier.DocIDServer;
+import com.goikosoft.crawler4j.frontier.DocIDServerInterface;
 import com.goikosoft.crawler4j.frontier.Frontier;
+import com.goikosoft.crawler4j.frontier.FrontierInterface;
 import com.goikosoft.crawler4j.parser.Parser;
 import com.goikosoft.crawler4j.robotstxt.RobotstxtServer;
 import com.goikosoft.crawler4j.url.TLDList;

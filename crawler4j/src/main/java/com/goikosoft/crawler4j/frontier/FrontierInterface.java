@@ -1,8 +1,8 @@
-package edu.uci.ics.crawler4j.frontier;
+package com.goikosoft.crawler4j.frontier;
 
 import java.util.List;
 
-import edu.uci.ics.crawler4j.url.WebURL;
+import com.goikosoft.crawler4j.url.WebURL;
 
 public interface FrontierInterface {
 

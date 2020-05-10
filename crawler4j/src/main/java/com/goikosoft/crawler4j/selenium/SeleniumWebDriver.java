@@ -1,14 +1,13 @@
-package edu.uci.ics.crawler4j.selenium;
+package com.goikosoft.crawler4j.selenium;
 
 import org.apache.http.client.CookieStore;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Cookie;
 
+import com.goikosoft.crawler4j.url.WebURL;
 import com.machinepublishers.jbrowserdriver.JBrowserDriver;
 import com.machinepublishers.jbrowserdriver.Settings;
-
-import edu.uci.ics.crawler4j.url.WebURL;
 
 /**
  * Basic Selenmium Web Driver based on JBrowserDriver. Allows to use a persistent CookieStore

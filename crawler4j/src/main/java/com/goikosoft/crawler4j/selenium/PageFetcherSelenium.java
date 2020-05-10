@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package edu.uci.ics.crawler4j.selenium;
+package com.goikosoft.crawler4j.selenium;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -69,23 +69,22 @@ import org.openqa.selenium.NoSuchElementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.goikosoft.crawler4j.crawler.CrawlConfig;
+import com.goikosoft.crawler4j.crawler.authentication.AuthInfo;
+import com.goikosoft.crawler4j.crawler.authentication.BasicAuthInfo;
+import com.goikosoft.crawler4j.crawler.authentication.FormAuthInfo;
+import com.goikosoft.crawler4j.crawler.authentication.NtAuthInfo;
+import com.goikosoft.crawler4j.crawler.exceptions.PageBiggerThanMaxSizeException;
+import com.goikosoft.crawler4j.fetcher.BasicAuthHttpRequestInterceptor;
+import com.goikosoft.crawler4j.fetcher.IdleConnectionMonitorThread;
+import com.goikosoft.crawler4j.fetcher.PageFetchResult;
+import com.goikosoft.crawler4j.fetcher.PageFetchResultInterface;
+import com.goikosoft.crawler4j.fetcher.PageFetcherInterface;
+import com.goikosoft.crawler4j.fetcher.SniPoolingHttpClientConnectionManager;
+import com.goikosoft.crawler4j.fetcher.SniSSLConnectionSocketFactory;
+import com.goikosoft.crawler4j.url.URLCanonicalizer;
+import com.goikosoft.crawler4j.url.WebURL;
 import com.machinepublishers.jbrowserdriver.Settings;
-
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
-import edu.uci.ics.crawler4j.crawler.authentication.AuthInfo;
-import edu.uci.ics.crawler4j.crawler.authentication.BasicAuthInfo;
-import edu.uci.ics.crawler4j.crawler.authentication.FormAuthInfo;
-import edu.uci.ics.crawler4j.crawler.authentication.NtAuthInfo;
-import edu.uci.ics.crawler4j.crawler.exceptions.PageBiggerThanMaxSizeException;
-import edu.uci.ics.crawler4j.fetcher.BasicAuthHttpRequestInterceptor;
-import edu.uci.ics.crawler4j.fetcher.IdleConnectionMonitorThread;
-import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
-import edu.uci.ics.crawler4j.fetcher.PageFetchResultInterface;
-import edu.uci.ics.crawler4j.fetcher.PageFetcherInterface;
-import edu.uci.ics.crawler4j.fetcher.SniPoolingHttpClientConnectionManager;
-import edu.uci.ics.crawler4j.fetcher.SniSSLConnectionSocketFactory;
-import edu.uci.ics.crawler4j.url.URLCanonicalizer;
-import edu.uci.ics.crawler4j.url.WebURL;
 
 /**
  *
@@ -317,7 +316,7 @@ public class PageFetcherSelenium implements PageFetcherInterface {
                 driver.get(webUrl);
 
                 fetchResult.setDriver(driver);
-                fetchResult.setFetchedUrl(toFetchURL);
+                fetchResult.setFetchedWebUrl(webUrl);
                 // Setting HttpStatus
                 int statusCode = driver.getStatusCode();
 
@@ -344,11 +343,13 @@ public class PageFetcherSelenium implements PageFetcherInterface {
 
                     throw new IOException("Redirection not supported for Selenium. It should follow it automatically");
                 } else if (statusCode >= 200 && statusCode <= 299) { // is 2XX, everything looks ok
-                    fetchResult.setFetchedUrl(toFetchURL);
+                    fetchResult.setFetchedWebUrl(webUrl);
                     String uri = driver.getCurrentUrl();
                     if (!uri.equals(toFetchURL)) {
                         if (!URLCanonicalizer.getCanonicalURL(uri).equals(toFetchURL)) {
-                            fetchResult.setFetchedUrl(uri);
+                            WebURL newUrl = new WebURL();
+                            newUrl.setURL(uri);
+                            fetchResult.setFetchedWebUrl(newUrl);
                         }
                     }
 
@@ -400,11 +401,13 @@ public class PageFetcherSelenium implements PageFetcherInterface {
                         fetchResult.setMovedToUrl(movedToUrl);
                     }
                 } else if (statusCode >= 200 && statusCode <= 299) { // is 2XX, everything looks ok
-                    fetchResult.setFetchedUrl(toFetchURL);
+                    fetchResult.setFetchedWebUrl(webUrl);
                     String uri = request.getURI().toString();
                     if (!uri.equals(toFetchURL)) {
                         if (!URLCanonicalizer.getCanonicalURL(uri).equals(toFetchURL)) {
-                            fetchResult.setFetchedUrl(uri);
+                            WebURL newUrl = new WebURL();
+                            newUrl.setURL(uri);
+                            fetchResult.setFetchedWebUrl(newUrl);
                         }
                     }
 

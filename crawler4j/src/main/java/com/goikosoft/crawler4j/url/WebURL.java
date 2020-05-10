@@ -58,7 +58,7 @@ public class WebURL implements Serializable {
     private TLDList tldList;
 
     private boolean selenium = false;
-    
+
     private int failedFetches = 0;
     private boolean followRedirectsInmediatly = false;
     private short maxInmediateRedirects = 10;

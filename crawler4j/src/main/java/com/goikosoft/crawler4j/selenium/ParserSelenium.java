@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package edu.uci.ics.crawler4j.selenium;
+package com.goikosoft.crawler4j.selenium;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +27,20 @@ import org.apache.tika.language.LanguageIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.uci.ics.crawler4j.crawler.Page;
-import edu.uci.ics.crawler4j.crawler.exceptions.ParseException;
-import edu.uci.ics.crawler4j.parser.BinaryParseData;
-import edu.uci.ics.crawler4j.parser.CssParseData;
-import edu.uci.ics.crawler4j.parser.HtmlParseData;
-import edu.uci.ics.crawler4j.parser.HtmlParser;
-import edu.uci.ics.crawler4j.parser.NotAllowedContentException;
-import edu.uci.ics.crawler4j.parser.ParserInterface;
-import edu.uci.ics.crawler4j.parser.TextParseData;
-import edu.uci.ics.crawler4j.parser.TikaHtmlParser;
-import edu.uci.ics.crawler4j.url.TLDList;
-import edu.uci.ics.crawler4j.url.WebURL;
-import edu.uci.ics.crawler4j.util.Net;
-import edu.uci.ics.crawler4j.util.Util;
+import com.goikosoft.crawler4j.crawler.Page;
+import com.goikosoft.crawler4j.crawler.exceptions.ParseException;
+import com.goikosoft.crawler4j.parser.BinaryParseData;
+import com.goikosoft.crawler4j.parser.CssParseData;
+import com.goikosoft.crawler4j.parser.HtmlParseData;
+import com.goikosoft.crawler4j.parser.HtmlParser;
+import com.goikosoft.crawler4j.parser.NotAllowedContentException;
+import com.goikosoft.crawler4j.parser.ParserInterface;
+import com.goikosoft.crawler4j.parser.TextParseData;
+import com.goikosoft.crawler4j.parser.TikaHtmlParser;
+import com.goikosoft.crawler4j.url.TLDList;
+import com.goikosoft.crawler4j.url.WebURL;
+import com.goikosoft.crawler4j.util.Net;
+import com.goikosoft.crawler4j.util.Util;
 
 /**
  * Simple parser. Allows to set regular expressions for inclussion / exclussion for selenium driver.
