@@ -32,7 +32,7 @@ import com.sleepycat.je.Environment;
  * @author Yasser Ganjisaffar
  */
 
-public class Frontier {
+public class Frontier implements FrontierInterface {
     protected static final Logger logger = LoggerFactory.getLogger(Frontier.class);
 
     private static final String DATABASE_NAME = "PendingURLsDB";
@@ -98,6 +98,7 @@ public class Frontier {
         }
     }
 
+    @Override
     public void scheduleAll(List<WebURL> urls) {
         int maxPagesToFetch = config.getMaxPagesToFetch();
         synchronized (mutex) {
@@ -125,6 +126,7 @@ public class Frontier {
         }
     }
 
+    @Override
     public void schedule(WebURL url) {
         int maxPagesToFetch = config.getMaxPagesToFetch();
         synchronized (mutex) {
@@ -140,6 +142,7 @@ public class Frontier {
         }
     }
 
+    @Override
     public void getNextURLs(int max, List<WebURL> result) {
         while (true) {
             synchronized (mutex) {
@@ -177,6 +180,7 @@ public class Frontier {
         }
     }
 
+    @Override
     public void setProcessed(WebURL webURL) {
         counters.increment(Counters.ReservedCounterNames.PROCESSED_PAGES);
         if (inProcessPages != null) {
@@ -186,10 +190,12 @@ public class Frontier {
         }
     }
 
+    @Override
     public long getQueueLength() {
         return workQueues.getLength();
     }
 
+    @Override
     public long getNumberOfAssignedPages() {
         if (inProcessPages != null) {
             return inProcessPages.getLength();
@@ -198,18 +204,22 @@ public class Frontier {
         }
     }
 
+    @Override
     public long getNumberOfProcessedPages() {
         return counters.getValue(Counters.ReservedCounterNames.PROCESSED_PAGES);
     }
 
+    @Override
     public long getNumberOfScheduledPages() {
         return counters.getValue(Counters.ReservedCounterNames.SCHEDULED_PAGES);
     }
 
+    @Override
     public boolean isFinished() {
         return isFinished;
     }
 
+    @Override
     public void close() {
         workQueues.close();
         counters.close();
@@ -218,6 +228,7 @@ public class Frontier {
         }
     }
 
+    @Override
     public void finish() {
         isFinished = true;
         synchronized (waitingList) {

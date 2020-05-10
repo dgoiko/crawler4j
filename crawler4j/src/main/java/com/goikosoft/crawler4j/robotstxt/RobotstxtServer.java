@@ -112,7 +112,7 @@ public class RobotstxtServer {
         String proto = url.getProtocol();
         robotsTxtUrl.setURL(proto + "://" + host + port + "/robots.txt");
         HostDirectives directives = null;
-        PageFetchResult fetchResult = null;
+        PageFetchResultInterface fetchResult = null;
         try {
             for (int redir = 0; redir < 3; ++redir) {
                 fetchResult = pageFetcher.fetchPage(robotsTxtUrl);

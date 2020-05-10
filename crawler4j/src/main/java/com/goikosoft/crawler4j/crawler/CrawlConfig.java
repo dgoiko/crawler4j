@@ -31,6 +31,8 @@ import org.apache.http.message.BasicHeader;
 
 import com.goikosoft.crawler4j.crawler.authentication.AuthInfo;
 import com.goikosoft.crawler4j.crawler.exceptions.ConfigException;
+import com.machinepublishers.jbrowserdriver.Settings;
+
 
 public class CrawlConfig implements Cloneable {
 
@@ -246,6 +248,11 @@ public class CrawlConfig implements Cloneable {
      * number of pages to fetch/process from the database in a single read
      */
     private int batchReadSize = 50;
+
+    /**
+     *  Confguration for Selenium
+     */
+    private Settings seleniumConfig;
 
     /**
      * Validates the configs specified by this instance.
@@ -758,6 +765,14 @@ public class CrawlConfig implements Cloneable {
 
     public void setAllowRetryConnectionError(boolean allowRetryConnectionError) {
         this.allowRetryConnectionError = allowRetryConnectionError;
+    }
+
+    public Settings getSeleniumConfig() {
+        return seleniumConfig;
+    }
+
+    public void setSeleniumConfig(Settings seleniumConfig) {
+        this.seleniumConfig = seleniumConfig;
     }
 
     @Override

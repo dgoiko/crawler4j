@@ -35,7 +35,7 @@ import com.sleepycat.je.OperationStatus;
  * @author Yasser Ganjisaffar
  */
 
-public class DocIDServer {
+public class DocIDServer implements DocIDServerInterface {
     private static final Logger logger = LoggerFactory.getLogger(DocIDServer.class);
 
     private final Database docIDsDB;
@@ -178,6 +178,7 @@ public class DocIDServer {
         return isSeenBefore(url.encode());
     }
 
+    @Override
     public final int getDocCount() {
         try {
             return (int) docIDsDB.count();
@@ -187,6 +188,7 @@ public class DocIDServer {
         }
     }
 
+    @Override
     public void close() {
         try {
             docIDsDB.close();

@@ -91,12 +91,12 @@ public class GenericWebCrawler<ResultType> implements Runnable {
     /**
      * The DocIDServer that is used by this crawler instance to map each URL to a unique docid.
      */
-    private DocIDServer docIdServer;
+    private DocIDServerInterface docIdServer;
 
     /**
      * The Frontier object that manages the crawl queue.
      */
-    private Frontier frontier;
+    private FrontierInterface frontier;
 
     /**
      * Is the current crawler instance waiting for new URLs? This field is
@@ -483,7 +483,7 @@ public class GenericWebCrawler<ResultType> implements Runnable {
     }
 
     private void processPage(WebURL curURL) throws IOException, InterruptedException, ParseException {
-        PageFetchResult fetchResult = null;
+        PageFetchResultInterface fetchResult = null;
         Page page = new Page(curURL);
         try {
             if (curURL == null) {

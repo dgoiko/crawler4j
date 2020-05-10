@@ -15,98 +15,72 @@
  * limitations under the License.
  */
 
-package com.goikosoft.crawler4j.fetcher;
+package edu.uci.ics.crawler4j.selenium;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.goikosoft.crawler4j.crawler.Page;
-import com.goikosoft.crawler4j.url.WebURL;
+import com.machinepublishers.jbrowserdriver.JBrowserDriver;
+
+import edu.uci.ics.crawler4j.crawler.Page;
+import edu.uci.ics.crawler4j.fetcher.PageFetchResultInterface;
 
 /**
- * Modified by Dario Goikoetxea to represent the URL as WebURL
- * @author Yasser Ganjisaffar
+ * @author Dario Goikoetxea
  */
-public class PageFetchResult implements PageFetchResultInterface {
+public class PageFetchResultSelenium implements PageFetchResultInterface {
 
-    protected static final Logger logger = LoggerFactory.getLogger(PageFetchResult.class);
+    protected static final Logger logger = LoggerFactory.getLogger(PageFetchResultSelenium.class);
 
     private boolean haltOnError;
     protected int statusCode;
-    protected HttpEntity entity = null;
-    protected Header[] responseHeaders = null;
+    protected JBrowserDriver driver = null;
     protected String fetchedUrl = null;
-    protected WebURL fetchedWebUrl = null;
     protected String movedToUrl = null;
 
-    public PageFetchResult(boolean haltOnError) {
+    public PageFetchResultSelenium(boolean haltOnError) {
         this.haltOnError = haltOnError;
     }
 
+    @Override
     public int getStatusCode() {
         return statusCode;
     }
 
+    @Override
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }
 
-    public HttpEntity getEntity() {
-        return entity;
+    public JBrowserDriver getDriver() {
+        return driver;
     }
 
-    public void setEntity(HttpEntity entity) {
-        this.entity = entity;
+    public void setDriver(JBrowserDriver driver) {
+        this.driver = driver;
     }
 
-    public Header[] getResponseHeaders() {
-        return responseHeaders;
-    }
-
-    public void setResponseHeaders(Header[] responseHeaders) {
-        this.responseHeaders = responseHeaders;
-    }
-
-    @Deprecated
+    @Override
     public String getFetchedUrl() {
         return fetchedUrl;
     }
 
-    @Deprecated
+    @Override
     public void setFetchedUrl(String fetchedUrl) {
-        WebURL fetchedWebURL = new WebURL();
-        fetchedWebURL.setURL(fetchedUrl);
-        setFetchedWebUrl(fetchedWebURL);
+        this.fetchedUrl = fetchedUrl;
     }
 
-    public WebURL getFetchedWebUrl() {
-        return fetchedWebUrl;
-    }
-
-    public void setFetchedWebUrl(WebURL fetchedWebUrl) {
-        this.fetchedWebUrl = fetchedWebUrl;
-        // Compatibility until deprecated methods are deleted
-        if (fetchedWebUrl != null) {
-            this.fetchedUrl = fetchedWebUrl.getURL();
-        } else {
-            this.fetchedUrl = null;
-        }
-    }
-
+    @Override
     public boolean fetchContent(Page page, int maxBytes) throws SocketTimeoutException, IOException {
         try {
-            page.setFetchResponseHeaders(responseHeaders);
-            page.load(entity, maxBytes);
+            page.load(driver);
             return true;
-        } catch (SocketTimeoutException e) {
-            throw e;
-        } catch (IOException | RuntimeException e) {
+        } catch (RuntimeException e) {
             if (haltOnError) {
                 throw e;
             } else {
@@ -117,30 +91,45 @@ public class PageFetchResult implements PageFetchResultInterface {
         return false;
     }
 
+    @Override
     public void discardContentIfNotConsumed() {
         try {
-            if (entity != null) {
-                EntityUtils.consume(entity);
+            if (driver != null) {
+                driver.quit();
             }
-        } catch (IOException ignored) {
-            // We can EOFException (extends IOException) exception. It can happen on compressed
-            // streams which are not
-            // repeatable
-            // We can ignore this exception. It can happen if the stream is closed.
         } catch (RuntimeException e) {
             if (haltOnError) {
                 throw e;
             } else {
-                logger.warn("Unexpected error occurred while trying to discard content", e);
+                logger.warn("Unexpected error occurred while closing Selenium WebDriver", e);
             }
         }
     }
 
+    @Override
     public String getMovedToUrl() {
         return movedToUrl;
     }
 
+    @Override
     public void setMovedToUrl(String movedToUrl) {
         this.movedToUrl = movedToUrl;
+    }
+
+    /**
+     * This does not use entities.
+     */
+    @Override
+    public HttpEntity getEntity() {
+        return null;
+    }
+
+    /**
+     * Selenium does not easilly support obtaining response headers
+     *
+     */
+    @Override
+    public Header[] getResponseHeaders() {
+        return null;
     }
 }

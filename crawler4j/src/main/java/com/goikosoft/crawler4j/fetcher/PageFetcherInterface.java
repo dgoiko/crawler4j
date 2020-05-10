@@ -12,9 +12,8 @@ import com.goikosoft.crawler4j.url.WebURL;
  */
 public interface PageFetcherInterface {
 
-    PageFetchResult fetchPage(WebURL webUrl) throws InterruptedException, IOException,
-                                                    PageBiggerThanMaxSizeException;
+    PageFetchResultInterface fetchPage(WebURL webUrl) throws InterruptedException, IOException,
+                                                                PageBiggerThanMaxSizeException;
 
     void shutDown();
-
 }

@@ -56,6 +56,9 @@ public class WebURL implements Serializable {
     private String tag;
     private Map<String, String> attributes;
     private TLDList tldList;
+
+    private boolean selenium = false;
+    
     private int failedFetches = 0;
     private boolean followRedirectsInmediatly = false;
     private short maxInmediateRedirects = 10;
@@ -356,6 +359,14 @@ public class WebURL implements Serializable {
             this.headers = new ArrayList<Header>();
         }
         this.headers.add(new BasicHeader(name, value));
+    }
+
+    public boolean isSelenium() {
+        return selenium;
+    }
+
+    public void setSelenium(boolean selenium) {
+        this.selenium = selenium;
     }
 
     @Override

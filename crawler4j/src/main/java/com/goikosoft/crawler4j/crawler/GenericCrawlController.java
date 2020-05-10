@@ -78,8 +78,8 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
 
     protected PageFetcherInterface pageFetcher;
     protected RobotstxtServer robotstxtServer;
-    protected Frontier frontier;
-    protected DocIDServer docIdServer;
+    protected FrontierInterface frontier;
+    protected DocIDServerInterface docIdServer;
     protected TLDList tldList;
 
     protected final Object waitingLock = new Object();
@@ -701,19 +701,19 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
         this.robotstxtServer = robotstxtServer;
     }
 
-    public Frontier getFrontier() {
+    public FrontierInterface getFrontier() {
         return frontier;
     }
 
-    public void setFrontier(Frontier frontier) {
+    public void setFrontier(FrontierInterface frontier) {
         this.frontier = frontier;
     }
 
-    public DocIDServer getDocIdServer() {
+    public DocIDServerInterface getDocIdServer() {
         return docIdServer;
     }
 
-    public void setDocIdServer(DocIDServer docIdServer) {
+    public void setDocIdServer(DocIDServerInterface docIdServer) {
         this.docIdServer = docIdServer;
     }
 
