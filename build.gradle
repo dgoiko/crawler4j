@@ -12,7 +12,7 @@ allprojects {
     apply plugin: 'eclipse'
 
     group = 'com.goikosoft.crawler4j'
-    version = '4.4.3'
+    version = '4.4.4'
 }
 
 subprojects {
