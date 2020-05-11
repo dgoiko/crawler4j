@@ -1,5 +1,6 @@
 package com.goikosoft.crawler4j.selenium;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.goikosoft.crawler4j.crawler.CrawlConfig;
@@ -23,6 +24,27 @@ public class SeleniumCrawlConfig extends CrawlConfig {
     private List<String> seleniumIncludes;
 
     private boolean cookiesSelemiun;
+
+    @Override
+    public SeleniumCrawlConfig clone() {
+        // TODO Auto-generated method stub
+        SeleniumCrawlConfig temp = (SeleniumCrawlConfig) super.clone();
+        temp.cookiesSelemiun = cookiesSelemiun;
+        temp.defaultToSelenium = defaultToSelenium;
+        if (seleniumExcludes != null) {
+            temp.seleniumExcludes = new ArrayList<String>();
+            temp.seleniumExcludes.addAll(seleniumExcludes);
+        }
+        if (seleniumIncludes != null) {
+            temp.seleniumIncludes = new ArrayList<String>();
+            temp.seleniumIncludes.addAll(seleniumIncludes);
+        }
+        return temp;
+    }
+
+    protected SeleniumCrawlConfig createInstance() {
+        return new SeleniumCrawlConfig();
+    }
 
     @Override
     public String toString() {
