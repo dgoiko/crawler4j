@@ -19,6 +19,7 @@ package com.goikosoft.crawler4j.crawler;
 
 import com.goikosoft.crawler4j.fetcher.PageFetcherInterface;
 import com.goikosoft.crawler4j.parser.Parser;
+import com.goikosoft.crawler4j.parser.ParserInterface;
 import com.goikosoft.crawler4j.robotstxt.RobotstxtServer;
 import com.goikosoft.crawler4j.url.TLDList;
 
@@ -33,19 +34,19 @@ import com.goikosoft.crawler4j.url.TLDList;
 
 public class CrawlController extends GenericCrawlController<WebCrawler, Object> {
 
-    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
+    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, ParserInterface parser,
             RobotstxtServer robotstxtServer, TLDList tldList, String docIdDbName, String pendingDbName,
             String inProcessDbName) throws Exception {
         super(config, pageFetcher, parser, robotstxtServer, tldList, docIdDbName, pendingDbName, inProcessDbName);
     }
 
-    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
+    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, ParserInterface parser,
             RobotstxtServer robotstxtServer, TLDList tldList, String docIdDbName, String pendingDbName)
             throws Exception {
         super(config, pageFetcher, parser, robotstxtServer, tldList, docIdDbName, pendingDbName);
     }
 
-    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
+    public CrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, ParserInterface parser,
             RobotstxtServer robotstxtServer, TLDList tldList) throws Exception {
         super(config, pageFetcher, parser, robotstxtServer, tldList);
     }

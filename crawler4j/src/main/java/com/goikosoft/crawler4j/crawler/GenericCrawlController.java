@@ -33,6 +33,7 @@ import com.goikosoft.crawler4j.frontier.DocIDServerInterface;
 import com.goikosoft.crawler4j.frontier.Frontier;
 import com.goikosoft.crawler4j.frontier.FrontierInterface;
 import com.goikosoft.crawler4j.parser.Parser;
+import com.goikosoft.crawler4j.parser.ParserInterface;
 import com.goikosoft.crawler4j.robotstxt.RobotstxtServer;
 import com.goikosoft.crawler4j.url.TLDList;
 import com.goikosoft.crawler4j.url.URLCanonicalizer;
@@ -87,7 +88,7 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
     protected final Object waitingLock = new Object();
     protected final Environment env;
 
-    protected Parser parser;
+    protected ParserInterface parser;
 
     public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher,
                                   RobotstxtServer robotstxtServer) throws Exception {
@@ -99,18 +100,18 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
         this(config, pageFetcher, null, robotstxtServer, tldList, null, null, null);
     }
 
-    public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
+    public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, ParserInterface parser,
                                   RobotstxtServer robotstxtServer, TLDList tldList) throws Exception {
         this(config, pageFetcher, parser, robotstxtServer, tldList, null, null, null);
     }
 
-    public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
+    public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, ParserInterface parser,
                                   RobotstxtServer robotstxtServer, TLDList tldList,
                                   String docIdDbName, String pendingDbName) throws Exception {
         this(config, pageFetcher, parser, robotstxtServer, tldList, null, null, null);
     }
 
-    public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, Parser parser,
+    public GenericCrawlController(CrawlConfig config, PageFetcherInterface pageFetcher, ParserInterface parser,
                                   RobotstxtServer robotstxtServer, TLDList tldList,
                                   String docIdDbName, String pendingDbName, String inProcessDbName) throws Exception {
         config.validate();
@@ -186,7 +187,7 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
         return new WebURL();
     }
 
-    public Parser getParser() {
+    public ParserInterface getParser() {
         return parser;
     }
 
