@@ -415,13 +415,19 @@ public class WebURL implements Serializable {
         if (url == null || url.getURL() == null) {
             return null;
         }
+        String preffix;
+        if (url.isSelenium()) {
+            preffix = "selenium://";
+        } else {
+            preffix = "";
+        }
         if (!url.isPost()) {
-            return url.getURL();
+            return preffix + url.getURL();
         }
         if (url.getParamsPost() != null) {
-            return url.getURL() + POST_SEPARATOR + url.getParamsPost().encode();
+            return preffix + url.getURL() + POST_SEPARATOR + url.getParamsPost().encode();
         } else {
-            return url.getURL() + POST_SEPARATOR;
+            return preffix + url.getURL() + POST_SEPARATOR;
         }
     }
 
@@ -438,6 +444,10 @@ public class WebURL implements Serializable {
             return null;
         }
         WebURL result = new WebURL();
+        if (url.startsWith("selenium://")) {
+            url = url.replaceFirst("selenium:\\/\\/", "");
+            result.setSelenium(true);
+        }
         if (isPost(url)) {
             result.setPost(true);
             // Check if there's something usefull after POST_SEPARATOR.
