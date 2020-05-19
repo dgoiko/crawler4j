@@ -18,7 +18,6 @@
 package com.goikosoft.crawler4j.crawler;
 
 import com.goikosoft.crawler4j.fetcher.PageFetcherInterface;
-import com.goikosoft.crawler4j.parser.Parser;
 import com.goikosoft.crawler4j.parser.ParserInterface;
 import com.goikosoft.crawler4j.robotstxt.RobotstxtServer;
 import com.goikosoft.crawler4j.url.TLDList;

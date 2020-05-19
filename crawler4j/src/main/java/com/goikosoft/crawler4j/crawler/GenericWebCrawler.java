@@ -292,7 +292,7 @@ public class GenericWebCrawler<ResultType> implements Runnable {
      */
     protected boolean onContentFetchErrorNotFinal(Page page, Throwable exception) {
         // Call onContentFetchError for retrocompatibility. Should be removed
-        onContentFetchError(page, exception);
+        onContentFetchError(page);
         return true;
     }
 
@@ -421,6 +421,7 @@ public class GenericWebCrawler<ResultType> implements Runnable {
             }
         } catch (Throwable t) {
             setError(t);
+            t.printStackTrace();
         }
     }
 
@@ -480,6 +481,7 @@ public class GenericWebCrawler<ResultType> implements Runnable {
     public void visit(Page page) {
         // Do nothing by default
         // Sub-classed should override this to add their custom functionality
+        // logger.info("Visiting: {}", page.getWebURL().encode());
     }
 
     private void processPage(WebURL curURL) throws IOException, InterruptedException, ParseException {
