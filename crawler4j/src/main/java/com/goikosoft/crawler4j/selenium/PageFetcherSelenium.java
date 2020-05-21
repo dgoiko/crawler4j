@@ -376,7 +376,7 @@ public class PageFetcherSelenium implements PageFetcherInterface {
             PageFetchResult fetchResult = new PageFetchResult(config.isHaltOnError());
             HttpUriRequest request = null;
             try {
-                request = newHttpUriRequest(toFetchURL);
+                request = newHttpUriRequest(webUrl);
                 if (config.getPolitenessDelay() > 0) {
                     // Applying Politeness delay
                     synchronized (mutex) {
@@ -467,8 +467,27 @@ public class PageFetcherSelenium implements PageFetcherInterface {
      * @param url the url to be fetched
      * @return the HttpUriRequest for the given url
      */
-    protected HttpUriRequest newHttpUriRequest(String url) {
-        return new HttpGet(url);
+    protected HttpUriRequest newHttpUriRequest(WebURL url) {
+        HttpUriRequest req;
+        if (url.isPost()) {
+            HttpPost reqTemp = new HttpPost(url.getURL());
+            if (url.getParamsPost() != null) {
+                List<BasicNameValuePair> pairs = url.getParamsPost().getAsList();
+                if (pairs != null && pairs.size() > 0) {
+                    // Unnecesary comprobaion.
+                    reqTemp.setEntity(new UrlEncodedFormEntity(pairs, StandardCharsets.UTF_8));
+                }
+            }
+            req = reqTemp;
+        } else {
+            req = new HttpGet(url.getURL());
+        }
+        if (url.getHeaders() != null) {
+            for (Header header : url.getHeaders()) {
+                req.addHeader(header);
+            }
+        }
+        return req;
     }
 
     protected CrawlConfig getConfig() {
