@@ -7,6 +7,7 @@ import com.goikosoft.crawler4j.robotstxt.RobotstxtServer;
 import com.goikosoft.crawler4j.selenium.PageFetcherSelenium;
 import com.goikosoft.crawler4j.selenium.ParserSelenium;
 import com.goikosoft.crawler4j.selenium.SeleniumCrawlConfig;
+import com.goikosoft.crawler4j.selenium.SeleniumDrivers;
 import com.goikosoft.crawler4j.url.TLDList;
 import com.goikosoft.crawler4j.url.WebURL;
 
@@ -21,10 +22,12 @@ public class SimpleCrawler {
         config.setCleanupDelaySeconds(1);
         config.setThreadShutdownDelaySeconds(1);
         config.setCrawlStorageFolder(crawlStorageFolder);
-        config.setDefaultToSelenium(false);
+        config.setDefaultToSelenium(true);
         config.setCookiesSelemiun(true);
         config.setUserAgentString("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:76.0) Gecko/20100101 Firefox/76.0");
         config.setIncludeHttpsPages(true);
+        config.setDriver(SeleniumDrivers.FIREFOX);
+        config.setDriverPath("C:\\geckodriver.exe");
         // Instantiate the controller for this crawl.
         TLDList tldList = new TLDList(config);
         ParserSelenium parser = new ParserSelenium(config, tldList);

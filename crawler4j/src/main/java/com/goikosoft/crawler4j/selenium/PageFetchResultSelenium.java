@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import com.goikosoft.crawler4j.crawler.Page;
 import com.goikosoft.crawler4j.fetcher.PageFetchResultInterface;
 import com.goikosoft.crawler4j.url.WebURL;
-import com.machinepublishers.jbrowserdriver.JBrowserDriver;
 
 /**
  * @author Dario Goikoetxea
@@ -39,7 +38,7 @@ public class PageFetchResultSelenium implements PageFetchResultInterface {
 
     private boolean haltOnError;
     protected int statusCode;
-    protected JBrowserDriver driver = null;
+    protected SeleniumWebDriver driver = null;
     protected WebURL fetchedWebUrl = null;
     @Deprecated
     protected String fetchedUrl = null;
@@ -59,11 +58,11 @@ public class PageFetchResultSelenium implements PageFetchResultInterface {
         this.statusCode = statusCode;
     }
 
-    public JBrowserDriver getDriver() {
+    public SeleniumWebDriver getDriver() {
         return driver;
     }
 
-    public void setDriver(JBrowserDriver driver) {
+    public void setDriver(SeleniumWebDriver driver) {
         this.driver = driver;
     }
 

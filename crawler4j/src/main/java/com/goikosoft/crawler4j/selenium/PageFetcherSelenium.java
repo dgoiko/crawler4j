@@ -84,7 +84,6 @@ import com.goikosoft.crawler4j.fetcher.SniPoolingHttpClientConnectionManager;
 import com.goikosoft.crawler4j.fetcher.SniSSLConnectionSocketFactory;
 import com.goikosoft.crawler4j.url.URLCanonicalizer;
 import com.goikosoft.crawler4j.url.WebURL;
-import com.machinepublishers.jbrowserdriver.Settings;
 
 /**
  *
@@ -116,16 +115,24 @@ public class PageFetcherSelenium implements PageFetcherInterface {
     protected CloseableHttpClient httpClient;
     protected long lastFetchTime = 0;
     protected IdleConnectionMonitorThread connectionMonitorThread = null;
-    protected final Settings configSelenium;
     protected final CookieStore cookieStore;
+
+    private final boolean cookiesSelenium;
 
     public PageFetcherSelenium(SeleniumCrawlConfig config) throws NoSuchAlgorithmException, KeyManagementException,
                                                             KeyStoreException {
         this.config = config;
-        if (config.getSeleniumConfig() == null) {
-            configSelenium = Settings.builder().javascript(true).build();
+
+        if (config.getDriver() == SeleniumDrivers.FIREFOX) {
+            if (config.getDriverPath() != null) {
+                System.setProperty(SeleniumCrawlConfig.GECKO_PROPERTY, config.getDriverPath());
+            }
+            if (config.isCookiesSelemiun()) {
+                logger.warn("System confgured to store cookies using Firefox. This is currently not supported");
+            }
+            cookiesSelenium = false;
         } else {
-            configSelenium = config.getSeleniumConfig();
+            cookiesSelenium = config.isCookiesSelemiun();
         }
         RequestConfig requestConfig = RequestConfig.custom()
                 .setExpectContinueEnabled(false)
@@ -296,10 +303,10 @@ public class PageFetcherSelenium implements PageFetcherInterface {
         if (webUrl.isSelenium()) {
             PageFetchResultSelenium fetchResult = new PageFetchResultSelenium(config.isHaltOnError());
             SeleniumWebDriver driver;
-            if (config.isCookiesSelemiun()) {
-                driver = new SeleniumWebDriver(cookieStore, configSelenium);
+            if (cookiesSelenium) {
+                driver = new SeleniumWebDriver(config, cookieStore);
             } else {
-                driver = new SeleniumWebDriver(configSelenium);
+                driver = new SeleniumWebDriver(config);
             }
             try {
                 if (config.getPolitenessDelay() > 0) {
@@ -327,8 +334,8 @@ public class PageFetcherSelenium implements PageFetcherInterface {
                             statusCode = 200;
                         }
                     } catch (NoSuchElementException e) {
-                        // It is a real 499.
-                        e.printStackTrace();
+                        // Real 499, something happened.
+                        logger.debug("NoSuchElement on Selenium: ", e);
                     }
                 }
 

@@ -31,10 +31,11 @@ import org.slf4j.LoggerFactory;
 import com.goikosoft.crawler4j.crawler.CrawlConfig;
 import com.goikosoft.crawler4j.fetcher.PageFetcherInterface;
 import com.goikosoft.crawler4j.selenium.PageFetchResultSelenium;
+import com.goikosoft.crawler4j.selenium.SeleniumCrawlConfig;
+import com.goikosoft.crawler4j.selenium.SeleniumDrivers;
+import com.goikosoft.crawler4j.selenium.SeleniumWebDriver;
 import com.goikosoft.crawler4j.url.URLCanonicalizer;
 import com.goikosoft.crawler4j.url.WebURL;
-import com.machinepublishers.jbrowserdriver.JBrowserDriver;
-import com.machinepublishers.jbrowserdriver.Settings;
 
 /**
  *
@@ -52,17 +53,14 @@ public class PageFetcherSeleniumOnly implements PageFetcherInterface {
      * This field is protected for retro compatibility. Please use the getter method: getConfig() to
      * read this field;
      */
-    protected final CrawlConfig config;
-    protected final Settings configSelenium;
+    protected final SeleniumCrawlConfig config;
     protected long lastFetchTime = 0;
 
-    public PageFetcherSeleniumOnly(CrawlConfig config)
+    public PageFetcherSeleniumOnly(SeleniumCrawlConfig config)
             throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
         this.config = config;
-        if (config.getSeleniumConfig() == null) {
-            configSelenium = Settings.builder().javascript(true).build();
-        } else {
-            configSelenium = config.getSeleniumConfig();
+        if (config.getDriver() == SeleniumDrivers.FIREFOX && config.getDriverPath() != null) {
+            System.setProperty(SeleniumCrawlConfig.GECKO_PROPERTY, config.getDriverPath());
         }
     }
 
@@ -72,7 +70,7 @@ public class PageFetcherSeleniumOnly implements PageFetcherInterface {
         PageFetchResultSelenium fetchResult = new PageFetchResultSelenium(config.isHaltOnError());
         String toFetchURL = webUrl.getURL();
 
-        JBrowserDriver driver = new JBrowserDriver(configSelenium);
+        SeleniumWebDriver driver = new SeleniumWebDriver(config);
         try {
             if (config.getPolitenessDelay() > 0) {
                 // Applying Politeness delay

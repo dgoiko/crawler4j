@@ -3,9 +3,22 @@ package com.goikosoft.crawler4j.selenium;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.firefox.FirefoxOptions;
+
 import com.goikosoft.crawler4j.crawler.CrawlConfig;
+import com.machinepublishers.jbrowserdriver.Settings;
+import com.machinepublishers.jbrowserdriver.Settings.Builder;
 
 public class SeleniumCrawlConfig extends CrawlConfig {
+
+    public static final String GECKO_PROPERTY = "webdriver.gecko.driver";
+
+    private SeleniumDrivers driver = SeleniumDrivers.JBROWSER;
+
+    /**
+     * Gecko driver path. In the future, will hold the path of chrome drivers and others.
+     */
+    private String driverPath = null;
 
     /**
      * If true, selenium will be used when an URL does not match inclussion / exclussion patterns
@@ -23,7 +36,23 @@ public class SeleniumCrawlConfig extends CrawlConfig {
      */
     private List<String> seleniumIncludes;
 
+    /**
+     * Store and load cookies with selenium. Share cookies between selenium and non-selenium.
+     *
+     * Currently ONLY WORKS WITH JBROWSER
+     */
     private boolean cookiesSelemiun;
+
+    /**
+     *  Confguration for Selenium. Will override any config if exists. Will be created from this options if not
+     */
+    private Settings seleniumConfig;
+
+    /**
+     *  Confguration for Selenium's firefox web driver. Will override any config if exists.
+     *  Will be created from this options if not
+     */
+    private FirefoxOptions seleniumFirefoxConfig;
 
     @Override
     public SeleniumCrawlConfig clone() {
@@ -112,5 +141,59 @@ public class SeleniumCrawlConfig extends CrawlConfig {
 
     public void setCookiesSelemiun(boolean cookiesSelemiun) {
         this.cookiesSelemiun = cookiesSelemiun;
+    }
+
+    public SeleniumDrivers getDriver() {
+        return driver;
+    }
+
+    public void setDriver(SeleniumDrivers driver) {
+        this.driver = driver;
+    }
+
+    public Settings getSeleniumConfig() {
+        if (seleniumConfig == null) {
+            Builder options = new Settings.Builder();
+            options.headless(true);
+            options.javascript(true);
+            // Approximation.
+            options.maxConnections(this.getMaxConnectionsPerHost());
+            /*
+            if(this.getDefaultHeaders() != null && !this.getDefaultHeaders().isEmpty()) {
+                RequestHeaders headers = new RequestHeaders();
+                options.requestHeaders();
+
+            }*/
+            options.socketTimeout(this.getSocketTimeout());
+            //options.userAgent(this.getUserAgentString());
+            options.ssl("trustanything ");
+            return options.build();
+        }
+        return seleniumConfig;
+    }
+
+    public void setSeleniumConfig(Settings seleniumConfig) {
+        this.seleniumConfig = seleniumConfig;
+    }
+
+    public FirefoxOptions getSeleniumFirefoxConfig() {
+        if (seleniumFirefoxConfig == null) {
+            FirefoxOptions options = new FirefoxOptions();
+            options.setHeadless(true);
+            return options;
+        }
+        return seleniumFirefoxConfig;
+    }
+
+    public void setSeleniumFirefoxConfig(FirefoxOptions seleniumFirefoxConfig) {
+        this.seleniumFirefoxConfig = seleniumFirefoxConfig;
+    }
+
+    public String getDriverPath() {
+        return driverPath;
+    }
+
+    public void setDriverPath(String driverPath) {
+        this.driverPath = driverPath;
     }
 }
