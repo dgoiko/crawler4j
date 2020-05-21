@@ -28,6 +28,7 @@ public class SimpleCrawler {
         config.setIncludeHttpsPages(true);
         config.setDriver(SeleniumDrivers.FIREFOX);
         config.setDriverPath("C:\\geckodriver.exe");
+        //config.setBrowserPath("firefox"); // Not needed if firefox is in PATH
         // Instantiate the controller for this crawl.
         TLDList tldList = new TLDList(config);
         ParserSelenium parser = new ParserSelenium(config, tldList);

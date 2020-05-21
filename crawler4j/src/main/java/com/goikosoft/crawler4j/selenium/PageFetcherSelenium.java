@@ -127,6 +127,9 @@ public class PageFetcherSelenium implements PageFetcherInterface {
             if (config.getDriverPath() != null) {
                 System.setProperty(SeleniumCrawlConfig.GECKO_PROPERTY, config.getDriverPath());
             }
+            if (config.getBrowserPath() != null) {
+                System.setProperty(SeleniumCrawlConfig.FIREFOX_BIN_PROPERTY, config.getBrowserPath());
+            }
             if (config.isCookiesSelemiun()) {
                 logger.warn("System confgured to store cookies using Firefox. This is currently not supported");
             }

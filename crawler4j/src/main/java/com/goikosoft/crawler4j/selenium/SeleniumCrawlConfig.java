@@ -12,6 +12,7 @@ import com.machinepublishers.jbrowserdriver.Settings.Builder;
 public class SeleniumCrawlConfig extends CrawlConfig {
 
     public static final String GECKO_PROPERTY = "webdriver.gecko.driver";
+    public static final String FIREFOX_BIN_PROPERTY = "webdriver.firefox.bin";
 
     private SeleniumDrivers driver = SeleniumDrivers.JBROWSER;
 
@@ -19,6 +20,12 @@ public class SeleniumCrawlConfig extends CrawlConfig {
      * Gecko driver path. In the future, will hold the path of chrome drivers and others.
      */
     private String driverPath = null;
+
+    /**
+     * Path to the browser. If null, system will assume Selenium's default (which is
+     * normaly the estandard browser executable name, located under PATH
+     */
+    private String browserPath = null;
 
     /**
      * If true, selenium will be used when an URL does not match inclussion / exclussion patterns
@@ -166,7 +173,7 @@ public class SeleniumCrawlConfig extends CrawlConfig {
             }*/
             options.socketTimeout(this.getSocketTimeout());
             //options.userAgent(this.getUserAgentString());
-            options.ssl("trustanything ");
+            options.ssl("trustanything");
             return options.build();
         }
         return seleniumConfig;
@@ -195,5 +202,13 @@ public class SeleniumCrawlConfig extends CrawlConfig {
 
     public void setDriverPath(String driverPath) {
         this.driverPath = driverPath;
+    }
+
+    public String getBrowserPath() {
+        return browserPath;
+    }
+
+    public void setBrowserPath(String browserPath) {
+        this.browserPath = browserPath;
     }
 }
