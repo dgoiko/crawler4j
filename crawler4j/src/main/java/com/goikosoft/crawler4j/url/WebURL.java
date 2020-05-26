@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 
 import com.google.common.net.InternetDomainName;
 import com.sleepycat.persist.model.Entity;
@@ -371,7 +372,7 @@ public class WebURL implements Serializable {
 
     @Override
     public int hashCode() {
-        return url.hashCode();
+        return encode().hashCode();
     }
 
     @Override
@@ -384,7 +385,34 @@ public class WebURL implements Serializable {
         }
 
         WebURL otherUrl = (WebURL) o;
-        return (url != null) && url.equals(otherUrl.getURL());
+        if (otherUrl.isPost() != post) {
+            return false;
+        }
+        if (otherUrl.isSelenium() != selenium) {
+            return false;
+        }
+        if (url == null || !url.equals(otherUrl.getURL())) {
+            return false;
+        }
+        if (paramsPost == null || paramsPost.isEmpty()) {
+            return otherUrl.getParamsPost() == null || otherUrl.getParamsPost().isEmpty();
+        }
+        List<BasicNameValuePair> myList = paramsPost.getAsList();
+        PostParameters otherParams = otherUrl.getParamsPost();
+        if (otherParams.size() != myList.size()) {
+            return false;
+        }
+        for (BasicNameValuePair pair : myList) {
+            String value = otherParams.getParameter(pair.getName());
+            if (value == null) {
+                return false;
+            }
+            if (!value.equals(pair.getValue())) {
+                return false;
+            }
+        }
+
+        return true;
 
     }
 

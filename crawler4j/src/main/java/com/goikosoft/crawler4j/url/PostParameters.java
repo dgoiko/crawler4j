@@ -13,6 +13,10 @@ public interface PostParameters {
 
     String encode();
 
+    String getParameter(String key);
+
+    int size();
+
     boolean addParameter(String key, String value) throws IllegalArgumentException;
 
     /**

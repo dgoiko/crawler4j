@@ -34,6 +34,16 @@ public class SimplePostParameters implements PostParameters {
         return encodePostAttributes(paramsPost);
     }
 
+    @Override
+    public String getParameter(String key) {
+        for (BasicNameValuePair pair : paramsPost) {
+            if (pair.getName().equals(key)) {
+                return pair.getValue();
+            }
+        }
+        return null;
+    }
+
     public boolean addParameter(BasicNameValuePair pair) throws IllegalArgumentException {
         if (pair == null) {
             throw new IllegalArgumentException("pair cannot be null");
@@ -115,6 +125,11 @@ public class SimplePostParameters implements PostParameters {
     @Override
     public List<BasicNameValuePair> getAsList() {
         return paramsPost;
+    }
+
+    @Override
+    public int size() {
+        return paramsPost.size();
     }
 
 }
