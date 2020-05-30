@@ -247,6 +247,54 @@ public class CrawlConfig implements Cloneable {
      */
     private int batchReadSize = 50;
 
+    public CrawlConfig() {
+        super();
+    }
+
+    public CrawlConfig(CrawlConfig model) {
+        super();
+        this.crawlStorageFolder = model.crawlStorageFolder;
+        this.resumableCrawling = model.resumableCrawling;
+        this.dbLockTimeout = model.dbLockTimeout;
+        this.maxDepthOfCrawling = model.maxDepthOfCrawling;
+        this.maxPagesToFetch = model.maxPagesToFetch;
+        this.userAgentString = model.userAgentString;
+        this.defaultHeaders = model.defaultHeaders;
+        this.politenessDelay = model.politenessDelay;
+        this.includeHttpsPages = model.includeHttpsPages;
+        this.includeBinaryContentInCrawling = model.includeBinaryContentInCrawling;
+        this.processBinaryContentInCrawling = model.processBinaryContentInCrawling;
+        this.maxConnectionsPerHost = model.maxConnectionsPerHost;
+        this.maxTotalConnections = model.maxTotalConnections;
+        this.socketTimeout = model.socketTimeout;
+        this.connectionTimeout = model.connectionTimeout;
+        this.maxOutgoingLinksToFollow = model.maxOutgoingLinksToFollow;
+        this.maxDownloadSize = model.maxDownloadSize;
+        this.followRedirects = model.followRedirects;
+        this.onlineTldListUpdate = model.onlineTldListUpdate;
+        this.publicSuffixSourceUrl = model.publicSuffixSourceUrl;
+        this.publicSuffixLocalFile = model.publicSuffixLocalFile;
+        this.shutdownOnEmptyQueue = model.shutdownOnEmptyQueue;
+        this.threadMonitoringDelaySeconds = model.threadMonitoringDelaySeconds;
+        this.threadShutdownDelaySeconds = model.threadShutdownDelaySeconds;
+        this.cleanupDelaySeconds = model.cleanupDelaySeconds;
+        this.proxyHost = model.proxyHost;
+        this.proxyPort = model.proxyPort;
+        this.proxyUsername = model.proxyUsername;
+        this.proxyPassword = model.proxyPassword;
+        this.authInfos = model.authInfos;
+        this.cookiePolicy = model.cookiePolicy;
+        this.respectNoFollow = model.respectNoFollow;
+        this.respectNoIndex = model.respectNoIndex;
+        this.cookieStore = model.cookieStore;
+        this.maxRetries = model.maxRetries;
+        this.allowRetryConnectionError = model.allowRetryConnectionError;
+        this.dnsResolver = model.dnsResolver;
+        this.haltOnError = model.haltOnError;
+        this.allowSingleLevelDomain = model.allowSingleLevelDomain;
+        this.batchReadSize = model.batchReadSize;
+    }
+
     /**
      * Validates the configs specified by this instance.
      *

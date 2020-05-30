@@ -61,6 +61,33 @@ public class SeleniumCrawlConfig extends CrawlConfig {
      */
     private FirefoxOptions seleniumFirefoxConfig;
 
+    public SeleniumCrawlConfig() {
+        super();
+    }
+
+    public SeleniumCrawlConfig(CrawlConfig model) {
+        super(model);
+    }
+
+    public SeleniumCrawlConfig(SeleniumCrawlConfig model) {
+        super(model);
+        this.driver = model.driver;
+        this.driverPath = model.driverPath;
+        this.browserPath = model.browserPath;
+        this.defaultToSelenium = model.defaultToSelenium;
+        if (seleniumExcludes != null) {
+            this.seleniumExcludes = new ArrayList<String>();
+            this.seleniumExcludes.addAll(model.seleniumExcludes);
+        }
+        if (seleniumIncludes != null) {
+            this.seleniumIncludes = new ArrayList<String>();
+            this.seleniumIncludes.addAll(model.seleniumIncludes);
+        }
+        this.cookiesSelemiun = model.cookiesSelemiun;
+        this.seleniumConfig = model.seleniumConfig;
+        this.seleniumFirefoxConfig = model.seleniumFirefoxConfig;
+    }
+
     @Override
     public SeleniumCrawlConfig clone() {
         // TODO Auto-generated method stub
