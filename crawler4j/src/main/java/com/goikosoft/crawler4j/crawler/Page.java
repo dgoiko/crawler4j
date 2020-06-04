@@ -130,8 +130,11 @@ public class Page {
             if (readBufferLength <= 0) {
                 readBufferLength = 4096;
             }
-            // in case when the maxBytes is less than the actual page size
-            readBufferLength = Math.min(readBufferLength, maxBytes);
+
+            if (maxBytes > 0) {
+                // in case when the maxBytes is less than the actual page size
+                readBufferLength = Math.min(readBufferLength, maxBytes);
+            }
 
             // We allocate the buffer with either the actual size of the entity (if available)
             // or with the default 4KiB if the server did not return a value to avoid allocating

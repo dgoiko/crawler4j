@@ -627,6 +627,9 @@ public class GenericWebCrawler<ResultType> implements Runnable {
 
     protected void scheduleOutgoingUrls(Page page, WebURL curURL) throws IOException, InterruptedException {
         ParseData parseData = page.getParseData();
+        if (parseData.getOutgoingUrls() == null) {
+            return;
+        }
         List<WebURL> toSchedule = new ArrayList<>();
         int maxCrawlDepth = myController.getConfig().getMaxDepthOfCrawling();
         for (WebURL webURL : parseData.getOutgoingUrls()) {
