@@ -810,6 +810,11 @@ public class CrawlConfig implements Cloneable {
 
     @Override
     public String toString() {
+        StringBuilder sb = toStringBuilder();
+        return sb.toString();
+    }
+
+    protected StringBuilder toStringBuilder() {
         StringBuilder sb = new StringBuilder();
         sb.append("Crawl storage folder: " + getCrawlStorageFolder() + "\n");
         sb.append("Resumable crawling: " + isResumableCrawling() + "\n");
@@ -837,7 +842,8 @@ public class CrawlConfig implements Cloneable {
         sb.append("Halt on error: " + isHaltOnError() + "\n");
         sb.append("Allow single level domain:" + isAllowSingleLevelDomain() + "\n");
         sb.append("Batch read size: " + getBatchReadSize() + "\n");
-        return sb.toString();
+        sb.append("Max retries: " + getMaxRetries() + "\n");
+        return sb;
     }
 
     /**

@@ -67,10 +67,17 @@ public class SeleniumCrawlConfig extends CrawlConfig {
 
     public SeleniumCrawlConfig(CrawlConfig model) {
         super(model);
+        if (model instanceof SeleniumCrawlConfig) {
+            importMyData((SeleniumCrawlConfig)model);
+        }
     }
 
     public SeleniumCrawlConfig(SeleniumCrawlConfig model) {
         super(model);
+        importMyData(model);
+    }
+
+    private void importMyData(SeleniumCrawlConfig model) {
         this.driver = model.driver;
         this.driverPath = model.driverPath;
         this.browserPath = model.browserPath;
@@ -110,39 +117,16 @@ public class SeleniumCrawlConfig extends CrawlConfig {
     }
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Crawl storage folder: " + getCrawlStorageFolder() + "\n");
-        sb.append("Resumable crawling: " + isResumableCrawling() + "\n");
-        sb.append("Max depth of crawl: " + getMaxDepthOfCrawling() + "\n");
-        sb.append("Max pages to fetch: " + getMaxPagesToFetch() + "\n");
-        sb.append("User agent string: " + getUserAgentString() + "\n");
-        sb.append("Include https pages: " + isIncludeHttpsPages() + "\n");
-        sb.append("Include binary content: " + isIncludeBinaryContentInCrawling() + "\n");
-        sb.append("Max connections per host: " + getMaxConnectionsPerHost() + "\n");
-        sb.append("Max total connections: " + getMaxTotalConnections() + "\n");
-        sb.append("Socket timeout: " + getSocketTimeout() + "\n");
-        sb.append("Max total connections: " + getMaxTotalConnections() + "\n");
-        sb.append("Max outgoing links to follow: " + getMaxOutgoingLinksToFollow() + "\n");
-        sb.append("Max download size: " + getMaxDownloadSize() + "\n");
-        sb.append("Should follow redirects?: " + isFollowRedirects() + "\n");
-        sb.append("Proxy host: " + getProxyHost() + "\n");
-        sb.append("Proxy port: " + getProxyPort() + "\n");
-        sb.append("Proxy username: " + getProxyUsername() + "\n");
-        sb.append("Thread monitoring delay: " + getThreadMonitoringDelaySeconds() + "\n");
-        sb.append("Thread shutdown delay: " + getThreadShutdownDelaySeconds() + "\n");
-        sb.append("Cleanup delay: " + getCleanupDelaySeconds() + "\n");
-        sb.append("Cookie policy: " + getCookiePolicy() + "\n");
-        sb.append("Respect nofollow: " + isRespectNoFollow() + "\n");
-        sb.append("Respect noindex: " + isRespectNoIndex() + "\n");
-        sb.append("Halt on error: " + isHaltOnError() + "\n");
-        sb.append("Allow single level domain:" + isAllowSingleLevelDomain() + "\n");
-        sb.append("Batch read size: " + getBatchReadSize() + "\n");
+    protected StringBuilder toStringBuilder() {
+        StringBuilder sb = super.toStringBuilder();
+        sb.append("Selenium driver: " + getDriver() + "\n");
+        sb.append("Selenium driver path: " + getDriverPath() + "\n");
+        sb.append("Selenium browser path: " + getBrowserPath() + "\n");
         sb.append("Default to selenium: " + isDefaultToSelenium() + "\n");
         sb.append("Cookies to selenium: " + isCookiesSelemiun() + "\n");
         sb.append("Selenium inclussion patterns: " + getSeleniumIncludes() + "\n");
         sb.append("Selenium exclussion patterns: " + getSeleniumExcludes() + "\n");
-        return sb.toString();
+        return sb;
     }
 
     public boolean isDefaultToSelenium() {
