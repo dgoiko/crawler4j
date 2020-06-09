@@ -112,8 +112,6 @@ public class GenericWebCrawler<ResultType> implements Runnable {
 
     private short maxRetries;
 
-    private boolean allowRetryConnectionError;
-
     /**
      * Initializes the current instance of the crawler
      *
@@ -136,7 +134,6 @@ public class GenericWebCrawler<ResultType> implements Runnable {
         this.isWaitingForNewURLs = false;
         this.batchReadSize = crawlController.getConfig().getBatchReadSize();
         this.maxRetries = crawlController.getConfig().getMaxRetries();
-        this.allowRetryConnectionError = crawlController.getConfig().isAllowRetryConnectionError();
     }
 
     /**
@@ -603,7 +600,7 @@ public class GenericWebCrawler<ResultType> implements Runnable {
                 "Skipping: {} as it contains binary content which you configured not to crawl",
                 curURL.getURL());
         } catch (HttpHostConnectException e) {
-            if (allowRetryConnectionError && curURL.getFailedFetches() < maxRetries) {
+            if (curURL.getFailedFetches() < maxRetries) {
                 if (onConnectionErrorNotFinal(page, e)) {
                     scheduleAgain0(curURL);
                 }
