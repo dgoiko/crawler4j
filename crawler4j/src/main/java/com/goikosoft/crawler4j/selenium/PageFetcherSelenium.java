@@ -433,7 +433,7 @@ public class PageFetcherSelenium implements PageFetcherInterface {
                                 size = Integer.parseInt(length.getValue());
                             }
                         }
-                        if (size > config.getMaxDownloadSize()) {
+                        if (config.getMaxDownloadSize() > 0 && size > config.getMaxDownloadSize()) {
                             //fix issue #52 - consume entity
                             response.close();
                             throw new PageBiggerThanMaxSizeException(size);

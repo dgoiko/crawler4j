@@ -24,8 +24,6 @@ import org.slf4j.LoggerFactory;
 import com.goikosoft.crawler4j.crawler.CrawlConfig;
 import com.goikosoft.crawler4j.crawler.Page;
 import com.goikosoft.crawler4j.crawler.exceptions.ParseException;
-import com.goikosoft.crawler4j.url.TLDList;
-import com.goikosoft.crawler4j.util.Net;
 import com.goikosoft.crawler4j.util.Util;
 
 /**
@@ -41,12 +39,9 @@ public class ParserIgnoreURLs implements ParserInterface {
 
     private final HtmlParser htmlContentParser;
 
-    private final Net net;
-
-    public ParserIgnoreURLs(CrawlConfig config, TLDList tldList) throws IllegalAccessException, InstantiationException {
+    public ParserIgnoreURLs(CrawlConfig config) throws IllegalAccessException, InstantiationException {
         this.config = config;
         this.htmlContentParser = new TikaHtmlParserIgnoreURLs();
-        this.net = new Net(config, tldList);
     }
 
     @Override
@@ -71,7 +66,6 @@ public class ParserIgnoreURLs implements ParserInterface {
                 if (parseData.getHtml() == null) {
                     throw new ParseException();
                 }
-                //parseData.setOutgoingUrls(net.extractUrls(parseData.getHtml()));
             } else {
                 throw new NotAllowedContentException();
             }
@@ -84,7 +78,6 @@ public class ParserIgnoreURLs implements ParserInterface {
                     parseData.setTextContent(
                         new String(page.getContentData(), page.getContentCharset()));
                 }
-                //parseData.setOutgoingUrls(page.getWebURL());
                 page.setParseData(parseData);
             } catch (Exception e) {
                 logger.error("{}, while parsing css: {}", e.getMessage(), page.getWebURL().getURL());
@@ -99,7 +92,6 @@ public class ParserIgnoreURLs implements ParserInterface {
                     parseData.setTextContent(
                         new String(page.getContentData(), page.getContentCharset()));
                 }
-                //parseData.setOutgoingUrls(net.extractUrls(parseData.getTextContent()));
                 page.setParseData(parseData);
             } catch (Exception e) {
                 logger.error("{}, while parsing: {}", e.getMessage(), page.getWebURL().getURL());
