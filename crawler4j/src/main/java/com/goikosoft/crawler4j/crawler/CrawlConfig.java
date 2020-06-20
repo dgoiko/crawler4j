@@ -901,7 +901,7 @@ public class CrawlConfig implements Cloneable {
         return clone;
     }
 
-	protected CrawlConfig createInstance() {
+    protected CrawlConfig createInstance() {
         return new CrawlConfig();
     }
 }

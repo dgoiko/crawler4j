@@ -301,14 +301,16 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
     }
 
     protected <T extends CrawlerType> void start(final WebCrawlerFactory<T> crawlerFactory,
-                                                final int numberOfCrawlers, boolean isBlocking) {
+                                                int numberOfCrawlers, boolean isBlocking) {
         try {
             finished = false;
             setError(null);
             crawlersLocalData.clear();
             final List<Thread> threads = new ArrayList<>();
             final List<T> crawlers = new ArrayList<>();
-
+            if (numberOfCrawlers < 1) {
+                numberOfCrawlers = 1;
+            }
             for (int i = 1; i <= numberOfCrawlers; i++) {
                 T crawler = crawlerFactory.newInstance();
                 Thread thread = new Thread(crawler, "Crawler " + i);
