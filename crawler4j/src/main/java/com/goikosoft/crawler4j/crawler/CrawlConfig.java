@@ -896,10 +896,12 @@ public class CrawlConfig implements Cloneable {
         clone.haltOnError = haltOnError;
         clone.allowSingleLevelDomain = allowSingleLevelDomain;
         clone.batchReadSize = batchReadSize;
+        clone.maxRetries = maxRetries;
+        clone.allowRetryConnectionError = allowRetryConnectionError;
         return clone;
     }
 
-    protected CrawlConfig createInstance() {
+	protected CrawlConfig createInstance() {
         return new CrawlConfig();
     }
 }
