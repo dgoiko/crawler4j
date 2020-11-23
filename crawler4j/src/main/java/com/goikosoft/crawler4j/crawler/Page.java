@@ -105,6 +105,8 @@ public class Page {
      */
     protected boolean truncated = false;
 
+    protected WebDriver driver = null;
+
     public Page(WebURL url) {
         this.url = url;
     }
@@ -200,7 +202,7 @@ public class Page {
      * @param entity HttpEntity
      */
     public void load(WebDriver entity) {
-
+        driver = entity;
         contentType = null;
         contentEncoding = null;
         contentData = entity.getPageSource().getBytes(StandardCharsets.UTF_8);
@@ -323,5 +325,9 @@ public class Page {
 
     public boolean isTruncated() {
         return truncated;
+    }
+
+    public WebDriver getDriver() {
+        return driver;
     }
 }
