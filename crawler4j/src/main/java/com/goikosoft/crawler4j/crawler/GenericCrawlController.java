@@ -71,6 +71,18 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
      * Is the crawling of this session finished?
      */
     protected boolean finished;
+
+    /**
+     * Did the crawling of this session reach the crawl timeout?
+     */
+    protected boolean timeout;
+
+    /**
+     * Holds the moment when the crawling will time out. It is the starting time plus
+     * crawlingTimeout variable of the config, if not null and higher than 0
+     */
+    protected Long timeoutMoment = null;
+
     private Throwable error;
 
     /**
@@ -163,6 +175,7 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
         this.parser = parser == null ? new Parser(config, this.tldList) : parser;
         this.robotstxtServer = robotstxtServer;
 
+        timeout = false;
         finished = false;
         shuttingDown = false;
 
@@ -304,8 +317,14 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
                                                 int numberOfCrawlers, boolean isBlocking) {
         try {
             finished = false;
+            timeout = false;
             setError(null);
             crawlersLocalData.clear();
+            if (config.getCrawlingTimeout() != null && config.getCrawlingTimeout() > 0) {
+                timeoutMoment = System.currentTimeMillis() + config.getCrawlingTimeout();
+            } else {
+                timeoutMoment = null;
+            }
             final List<Thread> threads = new ArrayList<>();
             final List<T> crawlers = new ArrayList<>();
             if (numberOfCrawlers < 1) {
@@ -332,6 +351,14 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
 
                             while (true) {
                                 sleep(config.getThreadMonitoringDelaySeconds());
+                                if (timeoutMoment != null) {
+                                    // The crawler has a configured timeout.
+                                    if (!timeout && System.currentTimeMillis() > timeoutMoment) {
+                                        // First time timeout is reached. We just mimic the stop from outside.
+                                        timeout = true;
+                                        shutdown();
+                                    }
+                                }
                                 boolean someoneIsWorking = false;
                                 for (int i = 0; i < threads.size(); i++) {
                                     Thread thread = threads.get(i);
@@ -759,6 +786,10 @@ public class GenericCrawlController<CrawlerType extends GenericWebCrawler<? exte
         this.shuttingDown = true;
         pageFetcher.shutDown();
         frontier.finish();
+    }
+
+    public boolean isTimeout() {
+        return timeout;
     }
 
     public CrawlConfig getConfig() {

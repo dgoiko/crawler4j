@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
@@ -45,6 +46,15 @@ public class CrawlConfig implements Cloneable {
      * stopped/crashed crawl. However, it makes crawling slightly slower
      */
     private boolean resumableCrawling = false;
+
+    /**
+     * The maximum duration of the crawling session. If reached, crawling will
+     * be stopped. It can be resumed if resumableCrawling is set to true.
+     *
+     * The GenericCrawlController will perform a normal shutdown operation
+     * when the time has reached. Threads may take some time to properly finish.
+     */
+    private Long crawlingTimeout = null;
 
     /**
      * The lock timeout for the underlying sleepycat DB, in milliseconds
@@ -343,6 +353,60 @@ public class CrawlConfig implements Cloneable {
      */
     public void setResumableCrawling(boolean resumableCrawling) {
         this.resumableCrawling = resumableCrawling;
+    }
+
+    /**
+     * The configured crawling timeout, in milliseconds.
+     * @return the timeout in milliseconds
+     */
+    public Long getCrawlingTimeout() {
+        return crawlingTimeout;
+    }
+
+    /**
+     * If this feature is enabled (not null and positive value), the duration of the
+     * crawling session will not exceed the given milliseconds
+     *
+     * The GenericCrawlController will perform a normal shutdown operation
+     * when the time has reached. Threads may take some time to properly finish.
+     *
+     * Setting a null timeout will disable the limitation (default)
+     *
+     * @param milliseconds maximum miliseconds of crawling duration. This is not totally
+     * accurate, as threads may take some time to properly shutdown.
+     * @throws IllegalArgumentException if milliseconds is zero or a negative number
+     */
+    public void setCrawlingTimeout(Long milliseconds) throws IllegalArgumentException {
+        if (milliseconds != null && milliseconds < 1) {
+            throw new IllegalArgumentException("crawling timeout must be null or a positive number");
+        }
+        this.crawlingTimeout = milliseconds;
+    }
+
+    /**
+     * If this feature is enabled (not null and positive value), the duration of the
+     * crawling session will not exceed the given milliseconds
+     *
+     * The GenericCrawlController will perform a normal shutdown operation
+     * when the time has reached. Threads may take some time to properly finish.
+     *
+     * Setting a null time will disable the limitation (default)
+     *
+     * @param time maximum time of crawling duration. This is not totally
+     * accurate, as threads may take some time to properly shutdown.
+     * @param unit the time unit
+     * @throws NullPointerException if unit is null
+     * @throws IllegalArgumentException if time is zero or a negative number
+     */
+    public void setCrawlingTimeout(Long time, TimeUnit unit) throws NullPointerException, IllegalArgumentException {
+        if (time != null) {
+            if (time < 1) {
+                throw new IllegalArgumentException("crawling timeout must be null or a positive number");
+            }
+            this.crawlingTimeout = unit.toMillis(time);
+        } else {
+            this.crawlingTimeout = null;
+        }
     }
 
     /**
